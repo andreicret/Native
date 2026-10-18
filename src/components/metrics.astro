@@ -1,0 +1,28 @@
+---
+import Sectionhead from "@/components/sectionhead.astro";
+
+// TODO: the numbers that tell you whether Native works
+const metrics = [
+  { value: "1,000", label: "Monthly active users", hint: "target after 6 months" },
+  { value: "40%", label: "Week-4 retention", hint: "users still active after a month" },
+  { value: "5%", label: "Free → paid conversion", hint: "of active users" },
+  { value: "4.5★", label: "Average rating", hint: "store / feedback score" },
+];
+---
+
+<Sectionhead id="metrics">
+  <Fragment slot="title">Key Metrics</Fragment>
+  <Fragment slot="desc">The numbers that tell us whether Native is working.</Fragment>
+</Sectionhead>
+
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-12 max-w-5xl mx-auto">
+  {
+    metrics.map((item) => (
+      <div class="border-2 border-gray-200 rounded-md p-6 text-center">
+        <p class="text-5xl font-bold tracking-tight">{item.value}</p>
+        <p class="font-semibold mt-3">{item.label}</p>
+        <p class="text-sm text-slate-500 mt-1">{item.hint}</p>
+      </div>
+    ))
+  }
+</div>

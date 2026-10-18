@@ -1,0 +1,30 @@
+---
+import { Icon } from "astro-icon/components";
+import Sectionhead from "@/components/sectionhead.astro";
+
+// TODO: describe the pain points you noticed
+const pains = [
+  { title: "Pain point one", description: "Who has it, how often, and what it costs them." },
+  { title: "Pain point two", description: "Who has it, how often, and what it costs them." },
+  { title: "Pain point three", description: "Why existing workarounds fall short." },
+];
+---
+
+<Sectionhead id="problem">
+  <Fragment slot="title">The Problem</Fragment>
+  <Fragment slot="desc">
+    A short paragraph describing the problem you noticed and why it matters.
+  </Fragment>
+</Sectionhead>
+
+<div class="grid md:grid-cols-3 gap-6 mt-12 max-w-5xl mx-auto">
+  {
+    pains.map((item) => (
+      <div class="border-2 border-gray-200 rounded-md p-6">
+        <Icon class="w-8 h-8 text-red-500" name="bx:bxs-error" />
+        <h3 class="font-semibold text-lg mt-4">{item.title}</h3>
+        <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+      </div>
+    ))
+  }
+</div>

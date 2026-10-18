@@ -1,0 +1,57 @@
+---
+// @ts-ignore
+import { Icon } from "astro-icon/components";
+import Sectionhead from "@/components/sectionhead.astro";
+
+// TODO: your solution's main features
+const features = [
+  {
+    title: "Feature one",
+    description: "What it does and how it solves one of the pain points.",
+    icon: "bx:bxs-zap",
+  },
+  {
+    title: "Feature two",
+    description: "What it does and how it solves one of the pain points.",
+    icon: "bx:bxs-bulb",
+  },
+  {
+    title: "Feature three",
+    description: "What it does and how it solves one of the pain points.",
+    icon: "bx:bxs-shield",
+  },
+];
+---
+
+<Sectionhead id="solution">
+  <Fragment slot="title">Our Solution</Fragment>
+  <Fragment slot="desc">How Native solves the problem and the value it brings.</Fragment>
+</Sectionhead>
+
+<!-- TODO: value proposition -->
+<div
+  class="bg-black p-8 md:px-20 md:py-16 mt-12 mx-auto max-w-5xl rounded-lg text-center">
+  <p class="text-slate-400 text-sm uppercase tracking-widest">Value proposition</p>
+  <p class="text-white text-2xl md:text-4xl tracking-tight mt-4 leading-snug">
+    Native helps <span class="text-slate-400">[customer]</span> to
+    <span class="text-slate-400">[do something]</span> by
+    <span class="text-slate-400">[how]</span>, unlike
+    <span class="text-slate-400">[alternative]</span>.
+  </p>
+</div>
+
+<div class="grid sm:grid-cols-2 md:grid-cols-3 mt-16 gap-16 max-w-5xl mx-auto">
+  {
+    features.map((item) => (
+      <div class="flex gap-4 items-start">
+        <div class="mt-1 bg-black rounded-full p-2 w-8 h-8 shrink-0">
+          <Icon class="text-white" name={item.icon} />
+        </div>
+        <div>
+          <h3 class="font-semibold text-lg">{item.title}</h3>
+          <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+        </div>
+      </div>
+    ))
+  }
+</div>

@@ -1,0 +1,68 @@
+---
+import { Icon } from "astro-icon/components";
+import { Tick } from "@/components/ui/icons";
+import Sectionhead from "@/components/sectionhead.astro";
+
+// TODO: your cost structure (shares should add up to 100) and revenue streams
+const costs = [
+  { label: "Development", share: 45 },
+  { label: "Marketing", share: 25 },
+  { label: "Hosting & infrastructure", share: 20 },
+  { label: "Maintenance & support", share: 10 },
+];
+
+const revenue = [
+  { title: "Freemium subscription", description: "Premium features for €X / month." },
+  { title: "B2B licensing", description: "Plans for organisations." },
+  { title: "Partnerships", description: "Integrations and referral fees." },
+];
+---
+
+<Sectionhead id="business">
+  <Fragment slot="title">Costs & Revenue</Fragment>
+  <Fragment slot="desc">Where the money goes and where it comes from.</Fragment>
+</Sectionhead>
+
+<div class="grid md:grid-cols-2 gap-6 mt-12 max-w-5xl mx-auto">
+  <div class="border-2 border-gray-200 rounded-md p-8">
+    <div class="flex items-center gap-3">
+      <Icon class="w-7 h-7" name="bx:bxs-pie-chart-alt-2" />
+      <h3 class="text-2xl font-bold">Cost structure</h3>
+    </div>
+    <ul class="grid gap-5 mt-8">
+      {
+        costs.map((item) => (
+          <li>
+            <div class="flex justify-between text-sm">
+              <span class="text-gray-800">{item.label}</span>
+              <span class="text-slate-500">{item.share}%</span>
+            </div>
+            <div class="mt-2 h-2.5 bg-gray-100 rounded-full">
+              <div class="h-2.5 bg-black rounded-full" style={`width: ${item.share}%`} />
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="bg-black text-white rounded-md p-8">
+    <div class="flex items-center gap-3">
+      <Icon class="w-7 h-7" name="bx:bxs-wallet" />
+      <h3 class="text-2xl font-bold">Revenue streams</h3>
+    </div>
+    <ul class="grid gap-6 mt-8">
+      {
+        revenue.map((item) => (
+          <li class="flex items-start gap-3">
+            <Tick class="w-6 h-6 shrink-0" />
+            <div>
+              <p class="font-semibold">{item.title}</p>
+              <p class="text-slate-400 text-sm mt-1">{item.description}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
