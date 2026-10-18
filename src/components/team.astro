@@ -23,7 +23,7 @@ const initials = (name: string) =>
   <Fragment slot="desc">The people building Native and what each of us owns.</Fragment>
 </Sectionhead>
 
-<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-10 mx-auto max-w-5xl mt-12">
+<div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-10 mx-auto max-w-6xl mt-12">
   {
     members.map(({ data }) => (
       <div class="group">
@@ -48,7 +48,7 @@ const initials = (name: string) =>
           <p class="text-sm text-slate-500">{data.role}</p>
           <a
             href={`mailto:${data.email}`}
-            class="mt-2 inline-flex items-center gap-1 text-sm text-slate-600 hover:text-black break-all">
+            class="mt-2 inline-flex items-center gap-1 text-xs text-slate-600 hover:text-black whitespace-nowrap">
             <Icon class="w-4 h-4 shrink-0" name="bx:bxs-envelope" />
             {data.email}
           </a>
