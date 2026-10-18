@@ -3,22 +3,30 @@
 import { Icon } from "astro-icon/components";
 import Sectionhead from "@/components/sectionhead.astro";
 
-// TODO: your solution's main features
-const features = [
+const steps = [
   {
-    title: "Feature one",
-    description: "What it does and how it solves one of the pain points.",
-    icon: "bx:bxs-zap",
+    label: "Watch",
+    title: "Immersive multimedia lessons",
+    description:
+      "Our platform offers immersive, extended learning sessions built around engaging multimedia content, including animations, interviews, documentaries, and selected scenes from films and animated productions.",
+    tags: ["Animations", "Interviews", "Documentaries", "Film scenes", "Animated productions"],
+    icon: "bx:bxs-videos",
   },
   {
-    title: "Feature two",
-    description: "What it does and how it solves one of the pain points.",
-    icon: "bx:bxs-bulb",
+    label: "Practice",
+    title: "Context-driven exercises",
+    description:
+      "Each lesson is followed by interactive, context-driven exercises designed not only to expand learners’ vocabulary, but also to develop their ability to construct sentences independently, express complex ideas, and respond naturally in realistic conversational scenarios.",
+    tags: [],
+    icon: "bx:bxs-brain",
   },
   {
-    title: "Feature three",
-    description: "What it does and how it solves one of the pain points.",
-    icon: "bx:bxs-shield",
+    label: "Speak",
+    title: "Real-life conversations",
+    description:
+      "By simulating real-life situations in which learners must actively use the target language, our approach bridges the gap between understanding a language and being able to communicate effectively in it.",
+    tags: [],
+    icon: "bx:bxs-conversation",
   },
 ];
 ---
@@ -28,30 +36,45 @@ const features = [
   <Fragment slot="desc">How Native solves the problem and the value it brings.</Fragment>
 </Sectionhead>
 
-<!-- TODO: value proposition -->
 <div
   class="bg-black p-8 md:px-20 md:py-16 mt-12 mx-auto max-w-5xl rounded-lg text-center">
   <p class="text-slate-400 text-sm uppercase tracking-widest">Value proposition</p>
   <p class="text-white text-2xl md:text-4xl tracking-tight mt-4 leading-snug">
-    Native helps <span class="text-slate-400">[customer]</span> to
-    <span class="text-slate-400">[do something]</span> by
-    <span class="text-slate-400">[how]</span>, unlike
-    <span class="text-slate-400">[alternative]</span>.
+    Native bridges the gap between{" "}
+    <span class="text-slate-400">understanding a language</span> and being able
+    to <span class="text-slate-400">communicate effectively</span> in it.
   </p>
 </div>
 
-<div class="grid sm:grid-cols-2 md:grid-cols-3 mt-16 gap-16 max-w-5xl mx-auto">
+<ol class="grid md:grid-cols-3 gap-6 mt-12 max-w-5xl mx-auto">
   {
-    features.map((item) => (
-      <div class="flex gap-4 items-start">
-        <div class="mt-1 bg-black rounded-full p-2 w-8 h-8 shrink-0">
-          <Icon class="text-white" name={item.icon} />
+    steps.map((item, index) => (
+      <li class="relative flex flex-col border-2 border-gray-200 rounded-md p-6 transition hover:-translate-y-1 hover:shadow-xl hover:border-black">
+        <div class="flex items-center justify-between">
+          <div class="bg-black rounded-full p-2 w-10 h-10 shrink-0">
+            <Icon class="text-white" name={item.icon} />
+          </div>
+          <span class="text-sm font-semibold uppercase tracking-widest text-slate-400">
+            0{index + 1} · {item.label}
+          </span>
         </div>
-        <div>
-          <h3 class="font-semibold text-lg">{item.title}</h3>
-          <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
-        </div>
-      </div>
+        <h3 class="font-semibold text-lg mt-5">{item.title}</h3>
+        <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+        {item.tags.length > 0 && (
+          <ul class="flex flex-wrap gap-2 mt-4">
+            {item.tags.map((tag) => (
+              <li class="px-2.5 py-1 rounded-full bg-gray-100 text-sm text-gray-800">{tag}</li>
+            ))}
+          </ul>
+        )}
+      </li>
     ))
   }
-</div>
+</ol>
+
+<p class="text-lg text-slate-600 mt-8 max-w-5xl mx-auto border-l-4 border-black pl-4">
+  Rather than simply memorizing words and grammatical rules, learners are
+  encouraged to think, formulate their own responses, and develop the
+  confidence and linguistic skills needed to engage in meaningful
+  conversations.
+</p>
