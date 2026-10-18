@@ -2,18 +2,31 @@
 import { Icon } from "astro-icon/components";
 import Sectionhead from "@/components/sectionhead.astro";
 
-// TODO: describe the pain points you noticed
 const pains = [
-  { title: "Pain point one", description: "Who has it, how often, and what it costs them." },
-  { title: "Pain point two", description: "Who has it, how often, and what it costs them." },
-  { title: "Pain point three", description: "Why existing workarounds fall short." },
+  {
+    title: "Vocabulary over understanding",
+    description: "Learners memorise words without understanding how the language actually works.",
+  },
+  {
+    title: "No sentence building",
+    description: "Little practice in constructing sentences, developing complex ideas or formulating sophisticated expressions.",
+  },
+  {
+    title: "No real conversation",
+    description: "Learners are not prepared to engage in meaningful, fluent conversations.",
+  },
 ];
 ---
 
 <Sectionhead id="problem">
   <Fragment slot="title">The Problem</Fragment>
   <Fragment slot="desc">
-    A short paragraph describing the problem you noticed and why it matters.
+    Current language-learning solutions on the market tend to focus on
+    vocabulary acquisition rather than developing a deeper understanding of how
+    the language works. While they help learners expand their vocabulary, they
+    often fail to teach them how to construct sentences, develop complex ideas,
+    formulate more sophisticated expressions, and engage in meaningful, fluent
+    conversations.
   </Fragment>
 </Sectionhead>
 

@@ -1,0 +1,397 @@
+---
+import { Icon } from "astro-icon/components";
+import Sectionhead from "@/components/sectionhead.astro";
+
+// Logos are shown as text monograms so every competitor looks consistent
+// and no third-party brand assets are needed.
+const competitors = [
+  {
+    name: "Duolingo",
+    monogram: "Du",
+    focus: "Gamified language learning",
+    strengths: ["Engaging exercises", "Progress tracking", "Daily challenges", "Accessibility"],
+    opportunity: "Greater emphasis on authentic content and contextual language learning.",
+  },
+  {
+    name: "DW Learn German",
+    monogram: "DW",
+    focus: "Structured German-language education",
+    strengths: ["Free educational content", "Video lessons", "Structured courses"],
+    opportunity: "Support multiple languages and more personalized learning experiences.",
+  },
+  {
+    name: "TV5MONDE Apprendre",
+    monogram: "T5",
+    focus: "Learning French through francophone TV content",
+    strengths: ["Free access", "Real TV videos", "Exercises from A1 to B2", "Subtitles and transcripts"],
+    opportunity:
+      "Support multiple languages and add speaking practice and personalized learning paths.",
+  },
+  {
+    name: "Lingopie",
+    monogram: "Li",
+    focus: "Language learning through TV shows and movies",
+    strengths: ["Authentic entertainment content", "Interactive subtitles", "Vocabulary tools"],
+    opportunity:
+      "Combine multimedia learning with structured progression and contextual speaking practice.",
+  },
+  {
+    name: "FluentU",
+    monogram: "Fu",
+    focus: "Learning through authentic videos",
+    strengths: ["Real-world videos", "Interactive subtitles", "Quizzes", "Personalized vocabulary practice"],
+    opportunity:
+      "Offer a more integrated learning journey connecting content, exercises, and speaking activities.",
+  },
+  {
+    name: "Language Reactor",
+    monogram: "LR",
+    focus: "Language learning through online video platforms",
+    strengths: ["Dual subtitles", "Vocabulary tools", "YouTube and Netflix integration"],
+    opportunity:
+      "Provide a standalone learning environment with guided lessons and progress tracking.",
+  },
+];
+
+const statuses = {
+  available: { label: "Available", icon: "bx:bxs-check-circle", class: "text-green-700" },
+  limited: { label: "Limited / Varies", icon: "bx:bxs-adjust", class: "text-amber-700" },
+  planned: { label: "Planned", icon: "bx:bxs-time-five", class: "text-indigo-700" },
+  none: { label: "Not a primary focus", icon: "bx:bx-minus", class: "text-slate-500" },
+  unverified: { label: "Not verified", icon: "bx:bxs-help-circle", class: "text-slate-400" },
+};
+
+const features = [
+  "Authentic Multimedia",
+  "Interactive Subtitles",
+  "Structured Learning",
+  "Speaking Practice",
+  "Free Access",
+];
+
+// Values follow the order of `features`. Based on public product information
+// (October 2026); "unverified" is used where we could not confirm a feature.
+const matrix = [
+  { platform: "Native", native: true, values: ["planned", "planned", "planned", "planned", "planned"] },
+  { platform: "Duolingo", values: ["none", "none", "available", "available", "available"] },
+  { platform: "DW Learn German", values: ["limited", "unverified", "available", "unverified", "available"] },
+  { platform: "TV5MONDE Apprendre", values: ["available", "limited", "available", "unverified", "available"] },
+  { platform: "Lingopie", values: ["available", "available", "limited", "unverified", "limited"] },
+  { platform: "FluentU", values: ["available", "available", "limited", "limited", "limited"] },
+  { platform: "Language Reactor", values: ["available", "available", "none", "none", "available"] },
+];
+
+const notes = [
+  "Duolingo: free plan is ad-supported; AI video-call conversation practice requires the paid Max tier.",
+  "DW Learn German: free courses built from learning-focused videos and audio, for German only.",
+  "TV5MONDE Apprendre: free, French only; videos come with French subtitles and transcripts rather than click-to-translate subtitles.",
+  "Lingopie and FluentU: paid subscriptions with a free trial (7 and 14 days respectively).",
+  "Language Reactor: free tier with dual subtitles; machine translation and extra tools in Pro.",
+  "Native: all features are planned, as the product is still under development.",
+];
+
+// Similarweb "Total Visits, last 3 months" (website only, app usage excluded),
+// pages dated September 2026. Only platforms with a public figure are listed.
+const presenceDate = "September 2026";
+const presence = [
+  { platform: "Duolingo", visits: 58_500_000, source: "https://www.similarweb.com/website/duolingo.com/" },
+  { platform: "Language Reactor", visits: 1_900_000, source: "https://www.similarweb.com/website/languagereactor.com/" },
+  { platform: "TV5MONDE Apprendre", visits: 1_300_000, source: "https://www.similarweb.com/website/apprendre.tv5monde.com/" },
+  { platform: "Lingopie", visits: 726_000, source: "https://www.similarweb.com/website/lingopie.com/" },
+  { platform: "FluentU", visits: 535_000, source: "https://www.similarweb.com/website/fluentu.com/" },
+  { platform: "Native", visits: null, native: true },
+].sort((a, b) => (b.visits ?? -1) - (a.visits ?? -1));
+
+const maxVisits = Math.max(...presence.map((row) => row.visits ?? 0));
+
+const formatVisits = (value: number) =>
+  new Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(value);
+
+const advantages = [
+  {
+    title: "Authentic Language Exposure",
+    description: "Learn from real conversations, interviews, podcasts, and multimedia content.",
+    icon: "bx:bxs-videos",
+  },
+  {
+    title: "Learning Through Context",
+    description: "Understand vocabulary, grammar, and expressions within realistic situations.",
+    icon: "bx:bxs-conversation",
+  },
+  {
+    title: "Personalized Learning",
+    description:
+      "Discover educational resources adapted to individual interests, language proficiency, and progress.",
+    icon: "bx:bxs-user-detail",
+  },
+  {
+    title: "Accessible Education",
+    description:
+      "Core learning resources for free through an advertising-supported model, with optional premium features planned for the future.",
+    icon: "bx:bxs-lock-open",
+  },
+];
+---
+
+<Sectionhead id="competition">
+  <Fragment slot="title">Competitive Landscape</Fragment>
+  <Fragment slot="desc">
+    The language-learning market offers a wide range of solutions, from
+    gamified exercises to immersive multimedia experiences. Native aims to
+    bring these approaches together into one accessible learning platform.
+  </Fragment>
+</Sectionhead>
+
+<div class="max-w-6xl mx-auto">
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-12">
+    {
+      competitors.map((item) => (
+        <article class="flex flex-col border-2 border-gray-200 rounded-md p-6 transition hover:-translate-y-1 hover:shadow-xl hover:border-black">
+          <div class="flex items-center gap-4">
+            <div
+              class="w-12 h-12 shrink-0 rounded-md bg-black text-white flex items-center justify-center font-bold text-lg"
+              aria-hidden="true">
+              {item.monogram}
+            </div>
+            <div>
+              <h3 class="font-semibold text-lg leading-tight">{item.name}</h3>
+              <p class="text-sm text-slate-500">{item.focus}</p>
+            </div>
+          </div>
+          <p class="text-xs font-semibold uppercase tracking-widest text-slate-400 mt-6">
+            Key strengths
+          </p>
+          <ul class="flex flex-wrap gap-2 mt-2">
+            {item.strengths.map((strength) => (
+              <li class="px-2.5 py-1 rounded-full bg-gray-100 text-sm text-gray-800">
+                {strength}
+              </li>
+            ))}
+          </ul>
+          <div class="mt-auto pt-6">
+            <div class="border-l-4 border-black pl-3">
+              <p class="text-xs font-semibold uppercase tracking-widest text-slate-400">
+                Opportunity for Native
+              </p>
+              <p class="text-slate-600 mt-1 leading-relaxed">{item.opportunity}</p>
+            </div>
+          </div>
+        </article>
+      ))
+    }
+  </div>
+
+  <h3 class="text-2xl font-bold mt-16">Comparison</h3>
+  <div class="mt-6 overflow-x-auto border-2 border-gray-200 rounded-md">
+    <table class="w-full min-w-[820px] text-sm">
+      <caption class="sr-only">Feature comparison between Native and its competitors</caption>
+      <thead>
+        <tr class="border-b-2 border-gray-200 bg-gray-50">
+          <th scope="col" class="p-4 text-left font-semibold">Platform</th>
+          {features.map((feature) => (
+            <th scope="col" class="p-4 text-left font-semibold">{feature}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {
+          matrix.map((row) => (
+            <tr
+              class:list={[
+                "border-b border-gray-200 last:border-0 transition hover:bg-gray-50",
+                row.native && "bg-indigo-50/60 hover:bg-indigo-50",
+              ]}>
+              <th
+                scope="row"
+                class:list={[
+                  "p-4 text-left font-semibold whitespace-nowrap",
+                  row.native && "border-l-4 border-indigo-600",
+                ]}>
+                {row.platform}
+              </th>
+              {row.values.map((value) => {
+                const status = statuses[value as keyof typeof statuses];
+                return (
+                  <td class="p-4">
+                    <span class:list={["inline-flex items-center gap-1.5 whitespace-nowrap", status.class]}>
+                      <Icon class="w-4 h-4 shrink-0" name={status.icon} />
+                      <span>{status.label}</span>
+                    </span>
+                  </td>
+                );
+              })}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <ul class="mt-4 grid gap-1 text-xs text-slate-500">
+    {notes.map((note) => <li>{note}</li>)}
+  </ul>
+
+  <h3 class="text-2xl font-bold mt-16">Estimated Market Presence</h3>
+  <p class="text-lg text-slate-600 mt-3">
+    A comparison of leading language-learning platforms based on publicly
+    available market indicators.
+  </p>
+  <figure class="mt-6 border-2 border-gray-200 rounded-md p-6 md:p-8">
+    <figcaption class="text-sm text-slate-500">
+      Website visits over the last 3 months · Similarweb estimates, {presenceDate}
+    </figcaption>
+    <ul class="presence-chart grid gap-4 mt-6">
+      {
+        presence.map((row) => (
+          <li class="grid grid-cols-1 sm:grid-cols-[11rem_1fr] gap-1 sm:gap-4 items-center">
+            <span class:list={["text-sm", row.native ? "font-semibold text-gray-900" : "text-gray-800"]}>
+              {row.platform}
+            </span>
+            {row.visits !== null ? (
+              <div
+                class="bar-row relative flex items-center gap-2 min-h-6 rounded-sm outline-none focus-visible:ring-2 ring-gray-300"
+                tabindex="0"
+                aria-label={`${row.platform}: ${formatVisits(row.visits)} visits, source Similarweb, ${presenceDate}`}>
+                <span
+                  class="bar block h-5 rounded-r-[4px] bg-slate-400 transition-colors"
+                  style={`--w: ${Math.max((row.visits / maxVisits) * 100, 0.6)}%`}
+                />
+                <span class="text-sm text-gray-800 tabular-nums whitespace-nowrap">
+                  {formatVisits(row.visits)}
+                </span>
+                <span class="tooltip" role="tooltip">
+                  <strong class="block text-white">{formatVisits(row.visits)} visits</strong>
+                  <span class="block text-slate-300">Last 3 months · {presenceDate}</span>
+                  <a href={row.source} target="_blank" rel="noopener" class="block text-slate-300 underline">
+                    Source: Similarweb
+                  </a>
+                </span>
+              </div>
+            ) : (
+              <div class="flex items-center gap-2 min-h-6">
+                <span class="block h-5 w-1.5 rounded-r-[4px] bg-indigo-600" />
+                <span class="text-sm text-indigo-700 font-medium">
+                  Emerging startup · no established market data yet
+                </span>
+              </div>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+    <details class="mt-6 text-sm">
+      <summary class="cursor-pointer text-slate-500 hover:text-gray-900">View data as table</summary>
+      <table class="mt-3 w-full text-left">
+        <thead>
+          <tr class="border-b border-gray-200">
+            <th scope="col" class="py-2 font-semibold">Platform</th>
+            <th scope="col" class="py-2 font-semibold text-right">Visits (last 3 months)</th>
+            <th scope="col" class="py-2 font-semibold pl-4">Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            presence.map((row) => (
+              <tr class="border-b border-gray-100 last:border-0">
+                <th scope="row" class="py-2 font-normal">{row.platform}</th>
+                <td class="py-2 text-right tabular-nums">
+                  {row.visits !== null ? formatVisits(row.visits) : "—"}
+                </td>
+                <td class="py-2 pl-4">
+                  {row.source ? (
+                    <a href={row.source} target="_blank" rel="noopener" class="underline text-slate-600">
+                      Similarweb, {presenceDate}
+                    </a>
+                  ) : (
+                    <span class="text-slate-400">Pre-launch</span>
+                  )}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </details>
+  </figure>
+  <p class="mt-4 text-xs text-slate-500">
+    Market presence is based on available public indicators and does not
+    represent verified market share. Figures cover website traffic only;
+    platforms such as Duolingo are used mostly through mobile apps, which are
+    not included.
+  </p>
+
+  <h3 class="text-2xl font-bold mt-16">What Makes Native Different?</h3>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-6">
+    {
+      advantages.map((item) => (
+        <div class="bg-black text-white rounded-md p-6 transition hover:-translate-y-1 hover:shadow-xl">
+          <Icon class="w-8 h-8" name={item.icon} />
+          <h4 class="font-semibold text-lg mt-4">{item.title}</h4>
+          <p class="text-slate-400 mt-2 leading-relaxed">{item.description}</p>
+        </div>
+      ))
+    }
+  </div>
+  <p class="text-lg text-slate-600 mt-8 border-l-4 border-black pl-4">
+    Native aims to bridge the gap between traditional language-learning
+    exercises and real-world communication.
+  </p>
+</div>
+
+<style>
+  .bar {
+    width: 0;
+    transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .presence-chart.is-visible .bar {
+    width: var(--w);
+  }
+  .bar-row:hover .bar,
+  .bar-row:focus-visible .bar {
+    background-color: var(--color-slate-600);
+  }
+  .tooltip {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 8px);
+    z-index: 10;
+    min-width: 12rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    background: var(--color-gray-900);
+    font-size: 0.75rem;
+    line-height: 1.4;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(4px);
+    transition: opacity 0.15s, transform 0.15s;
+  }
+  .bar-row:hover .tooltip,
+  .bar-row:focus-within .tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bar,
+    .tooltip {
+      transition: none;
+    }
+  }
+</style>
+
+<script>
+  // Grow the bars once the chart scrolls into view.
+  const chart = document.querySelector(".presence-chart");
+  if (chart) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          chart.classList.add("is-visible");
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(chart);
+  }
+</script>

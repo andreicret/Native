@@ -2,90 +2,27 @@
 import { Icon } from "astro-icon/components";
 import Sectionhead from "@/components/sectionhead.astro";
 
-// TODO: customer segments, competitors and your advantages
+// TODO: customer segments
 const segments = [
   { title: "Primary segment", description: "Who they are and what they need." },
   { title: "Secondary segment", description: "Who they are and what they need." },
   { title: "Early adopters", description: "Who will try Native first and why." },
 ];
-
-const competitors = ["Competitor A", "Competitor B", "Competitor C"];
-
-// `native` is our value, `others` follows the order of `competitors`
-const comparison = [
-  { label: "Key capability 1", native: true, others: [true, false, false] },
-  { label: "Key capability 2", native: true, others: [false, true, false] },
-  { label: "Key capability 3", native: true, others: [false, false, true] },
-  { label: "Price", native: "Free / €X", others: ["€Y", "€Z", "Free"] },
-];
-
-const advantages = [
-  { title: "Advantage one", description: "Why competitors can't easily copy it." },
-  { title: "Advantage two", description: "Why competitors can't easily copy it." },
-  { title: "Advantage three", description: "Why competitors can't easily copy it." },
-];
 ---
 
 <Sectionhead id="market">
-  <Fragment slot="title">Customers & Competition</Fragment>
-  <Fragment slot="desc">Who we build for, who else is out there, and why we win.</Fragment>
+  <Fragment slot="title">Customer Segments</Fragment>
+  <Fragment slot="desc">Who we build Native for.</Fragment>
 </Sectionhead>
 
 <div class="max-w-5xl mx-auto">
-  <h3 class="text-2xl font-bold mt-16">Customer segments</h3>
-  <div class="grid md:grid-cols-3 gap-6 mt-6">
+  <div class="grid md:grid-cols-3 gap-6 mt-12">
     {
       segments.map((item) => (
         <div class="border-2 border-gray-200 rounded-md p-6">
           <Icon class="w-8 h-8" name="bx:bxs-group" />
-          <h4 class="font-semibold text-lg mt-4">{item.title}</h4>
+          <h3 class="font-semibold text-lg mt-4">{item.title}</h3>
           <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
-        </div>
-      ))
-    }
-  </div>
-
-  <h3 class="text-2xl font-bold mt-16">Competition</h3>
-  <div class="mt-6 overflow-x-auto border-2 border-gray-200 rounded-md">
-    <table class="w-full min-w-[560px] text-center">
-      <thead>
-        <tr class="border-b-2 border-gray-200">
-          <th class="p-4"></th>
-          <th class="p-4 bg-black text-white">Native</th>
-          {competitors.map((name) => <th class="p-4 text-gray-600">{name}</th>)}
-        </tr>
-      </thead>
-      <tbody>
-        {
-          comparison.map((row) => (
-            <tr class="border-b border-gray-200 last:border-0">
-              <td class="p-4 text-left text-slate-600">{row.label}</td>
-              {[row.native, ...row.others].map((value, i) => (
-                <td class:list={["p-4", i === 0 && "bg-gray-50 font-semibold"]}>
-                  {value === true ? (
-                    <Icon class="w-6 h-6 mx-auto text-green-600" name="bx:bxs-check-circle" />
-                  ) : value === false ? (
-                    <Icon class="w-6 h-6 mx-auto text-gray-300" name="bx:bxs-x-circle" />
-                  ) : (
-                    value
-                  )}
-                </td>
-              ))}
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
-  </div>
-
-  <h3 class="text-2xl font-bold mt-16">Our advantage</h3>
-  <div class="grid md:grid-cols-3 gap-6 mt-6">
-    {
-      advantages.map((item) => (
-        <div class="bg-black text-white rounded-md p-6">
-          <Icon class="w-8 h-8" name="bx:bxs-trophy" />
-          <h4 class="font-semibold text-lg mt-4">{item.title}</h4>
-          <p class="text-slate-400 mt-2 leading-relaxed">{item.description}</p>
         </div>
       ))
     }

@@ -3,7 +3,7 @@ import { Icon } from "astro-icon/components";
 import { Tick } from "@/components/ui/icons";
 import Sectionhead from "@/components/sectionhead.astro";
 
-// TODO: your cost structure (shares should add up to 100) and revenue streams
+// TODO: your cost structure (shares should add up to 100)
 const costs = [
   { label: "Development", share: 45 },
   { label: "Marketing", share: 25 },
@@ -11,10 +11,54 @@ const costs = [
   { label: "Maintenance & support", share: 10 },
 ];
 
-const revenue = [
-  { title: "Freemium subscription", description: "Premium features for €X / month." },
-  { title: "B2B licensing", description: "Plans for organisations." },
-  { title: "Partnerships", description: "Integrations and referral fees." },
+const revenueStreams = [
+  {
+    title: "Premium Subscriptions",
+    description:
+      "As the platform grows, Native will introduce an optional subscription model offering additional benefits:",
+    points: [
+      "Ad-free learning experience",
+      "Advanced exercises and personalized learning paths",
+      "Unlimited vocabulary collections and flashcards",
+      "Access to exclusive educational materials",
+    ],
+    price: "€4.99–€6.99 / month",
+    icon: "bx:bxs-star",
+  },
+  {
+    title: "AI-Powered Features",
+    description: "Native plans to introduce paid AI-powered learning tools, including:",
+    points: [
+      "Interactive conversations with AI language tutors",
+      "Pronunciation analysis and feedback",
+      "Personalized exercises and learning recommendations",
+    ],
+    note: "These features may be included in higher-tier subscriptions or offered through a credit-based payment system.",
+    icon: "bx:bxs-bot",
+  },
+  {
+    title: "Educational Partnerships (B2B)",
+    description:
+      "In the long term, Native aims to partner with schools, universities, and language-learning institutions to make quality language education more accessible. Institutional subscriptions will be offered at affordable rates, giving students and teachers access to dedicated educational tools and authentic learning materials.",
+    points: [],
+    icon: "bx:bxs-graduation",
+  },
+];
+
+const stages = [
+  {
+    title: "Short-term",
+    description:
+      "Build a strong user base through free educational content supported by Google AdSense.",
+  },
+  {
+    title: "Medium-term",
+    description: "Introduce Premium subscriptions and AI-powered learning features.",
+  },
+  {
+    title: "Long-term",
+    description: "Expand into institutional licensing and educational partnerships.",
+  },
 ];
 ---
 
@@ -51,18 +95,86 @@ const revenue = [
       <Icon class="w-7 h-7" name="bx:bxs-wallet" />
       <h3 class="text-2xl font-bold">Revenue streams</h3>
     </div>
-    <ul class="grid gap-6 mt-8">
-      {
-        revenue.map((item) => (
-          <li class="flex items-start gap-3">
-            <Tick class="w-6 h-6 shrink-0" />
-            <div>
-              <p class="font-semibold">{item.title}</p>
-              <p class="text-slate-400 text-sm mt-1">{item.description}</p>
-            </div>
-          </li>
-        ))
-      }
-    </ul>
+    <p class="text-slate-400 mt-6 leading-relaxed">
+      Native will adopt a <strong class="text-white">freemium business
+      model</strong>, focusing on providing free access to language-learning
+      resources while generating revenue through advertising and optional
+      premium services.
+    </p>
+    <p class="text-sm uppercase tracking-widest text-slate-500 mt-8">
+      01 · Primary revenue stream
+    </p>
+    <div class="flex items-start gap-3 mt-3">
+      <Tick class="w-6 h-6 shrink-0" />
+      <div>
+        <p class="font-semibold">Advertising — Google AdSense</p>
+        <p class="text-slate-400 text-sm mt-1 leading-relaxed">
+          During the initial development stages, advertisements will be
+          displayed throughout the platform, allowing users to access
+          educational content for free while generating advertising revenue
+          based on website traffic and ad performance.
+        </p>
+      </div>
+    </div>
   </div>
+</div>
+
+<div class="max-w-5xl mx-auto">
+  <div class="grid lg:grid-cols-3 gap-6 mt-6">
+    {
+      revenueStreams.map((item, index) => (
+        <div class="flex flex-col border-2 border-gray-200 rounded-md p-6">
+          <div class="flex items-center justify-between">
+            <div class="bg-black rounded-full p-2 w-8 h-8 shrink-0">
+              <Icon class="text-white" name={item.icon} />
+            </div>
+            <span class="text-sm font-semibold text-slate-400">0{index + 2}</span>
+          </div>
+          <h4 class="font-semibold text-lg mt-4">{item.title}</h4>
+          <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+          {item.points.length > 0 && (
+            <ul class="grid gap-2 mt-4">
+              {item.points.map((point) => (
+                <li class="flex items-start gap-2 text-sm text-gray-800">
+                  <Tick class="w-5 h-5 shrink-0" />
+                  <span>{point}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+          {item.note && <p class="text-sm text-slate-500 mt-4 italic">{item.note}</p>}
+          {item.price && (
+            <p class="mt-auto pt-6">
+              <span class="inline-block px-3 py-1 rounded-full bg-black text-white text-sm font-semibold">
+                {item.price}
+              </span>
+            </p>
+          )}
+        </div>
+      ))
+    }
+  </div>
+
+  <h3 class="text-2xl font-bold mt-16">Monetization strategy</h3>
+  <p class="text-lg text-slate-600 mt-3">
+    Our monetization strategy will follow three stages:
+  </p>
+  <ol class="grid md:grid-cols-3 gap-6 mt-6">
+    {
+      stages.map((item, index) => (
+        <li class="relative border-2 border-gray-200 rounded-md p-6 pl-20">
+          <span class="absolute left-6 top-6 w-10 h-10 rounded-full bg-black text-white flex items-center justify-center font-bold">
+            {index + 1}
+          </span>
+          <h4 class="font-semibold text-lg">{item.title}</h4>
+          <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+        </li>
+      ))
+    }
+  </ol>
+  <p class="text-lg text-slate-600 mt-8 border-l-4 border-black pl-4">
+    This approach will allow Native to prioritize accessibility and user
+    acquisition while gradually developing diversified and sustainable revenue
+    streams.
+  </p>
 </div>
