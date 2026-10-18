@@ -1,12 +1,41 @@
 ---
-import { Icon } from "astro-icon/components";
+import { Picture } from "astro:assets";
 import Sectionhead from "@/components/sectionhead.astro";
+import learnImage from "@/assets/segments/learn.png";
+import libraryImage from "@/assets/segments/library.png";
+import pastryImage from "@/assets/segments/pastry.png";
+import watchImage from "@/assets/segments/watch.png";
 
-// TODO: customer segments
+const primary = {
+  title: "Independent Language Learners",
+  description:
+    "Our primary target audience consists of independent foreign-language learners who have acquired basic vocabulary and grammatical knowledge but struggle to apply what they know in spontaneous, real-life conversations.",
+  image: learnImage,
+  alt: "A learner with headphones taking notes while practicing a language on a laptop",
+};
+
 const segments = [
-  { title: "Primary segment", description: "Who they are and what they need." },
-  { title: "Secondary segment", description: "Who they are and what they need." },
-  { title: "Early adopters", description: "Who will try Native first and why." },
+  {
+    title: "Students and Young Adults",
+    description:
+      "Individuals seeking to improve their language proficiency for academic purposes, personal development, international opportunities, or future career prospects.",
+    image: libraryImage,
+    alt: "A group of students studying together with laptops in a university library",
+  },
+  {
+    title: "Travelers and People Preparing to Live Abroad",
+    description:
+      "Individuals preparing to travel, study, or relocate abroad who want to communicate confidently in everyday situations and adapt to a new linguistic environment.",
+    image: pastryImage,
+    alt: "A traveler ordering at a café counter abroad",
+  },
+  {
+    title: "Audiovisual and Culture-Driven Learners",
+    description:
+      "Individuals who prefer learning through engaging multimedia content, such as films, animations, documentaries, and interviews, rather than relying exclusively on traditional exercises and vocabulary memorization.",
+    image: watchImage,
+    alt: "A learner with headphones watching a subtitled video on a laptop",
+  },
 ];
 ---
 
@@ -16,14 +45,47 @@ const segments = [
 </Sectionhead>
 
 <div class="max-w-5xl mx-auto">
-  <div class="grid md:grid-cols-3 gap-6 mt-12">
+  <article
+    class="grid md:grid-cols-2 mt-12 border-2 border-gray-200 rounded-md overflow-hidden transition hover:shadow-xl hover:border-black">
+    <Picture
+      src={primary.image}
+      alt={primary.alt}
+      widths={[400, 700, 1000]}
+      sizes="(max-width: 768px) 100vw, 512px"
+      formats={["avif", "webp"]}
+      fallbackFormat="jpg"
+      class="w-full h-64 md:h-full object-cover"
+    />
+    <div class="p-8 md:p-10 flex flex-col justify-center">
+      <span
+        class="self-start px-3 py-1 rounded-full bg-black text-white text-xs font-semibold uppercase tracking-widest">
+        Primary target audience
+      </span>
+      <h3 class="text-2xl font-bold mt-4">{primary.title}</h3>
+      <p class="text-slate-600 mt-3 leading-relaxed">{primary.description}</p>
+    </div>
+  </article>
+
+  <div class="grid md:grid-cols-3 gap-6 mt-6">
     {
       segments.map((item) => (
-        <div class="border-2 border-gray-200 rounded-md p-6">
-          <Icon class="w-8 h-8" name="bx:bxs-group" />
-          <h3 class="font-semibold text-lg mt-4">{item.title}</h3>
-          <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
-        </div>
+        <article class="group flex flex-col border-2 border-gray-200 rounded-md overflow-hidden transition hover:-translate-y-1 hover:shadow-xl hover:border-black">
+          <div class="aspect-[4/3] overflow-hidden">
+            <Picture
+              src={item.image}
+              alt={item.alt}
+              widths={[320, 480, 640]}
+              sizes="(max-width: 768px) 100vw, 330px"
+              formats={["avif", "webp"]}
+              fallbackFormat="jpg"
+              class="w-full h-full object-cover transition duration-500 group-hover:scale-105"
+            />
+          </div>
+          <div class="p-6">
+            <h3 class="font-semibold text-lg">{item.title}</h3>
+            <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+          </div>
+        </article>
       ))
     }
   </div>
