@@ -1,7 +1,7 @@
 ---
 order: 3
-name: "alexandru.cret@stud.acs.upb.ro"
+name: "Alexandru-Andrei Cret"
 role: "Developer"
 email: "alexandru.cret@stud.acs.upb.ro"
-# photo: "member3.jpg"
+photo: "andrei-c.jpg"
 ---
