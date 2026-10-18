@@ -1,7 +1,7 @@
 ---
 order: 1
-name: "Member 1"
+name: "Nicusor-Alexandru Zaharia"
 role: "Project Manager"
-email: "member1@stud.acs.upb.ro"
+email: "nicusor.zaharia0308@stud.acs.upb.ro"
 # photo: "member1.jpg"
 ---

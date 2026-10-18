@@ -1,7 +1,7 @@
 ---
 order: 4
-name: "Member 4"
-role: "UI/UX Designer & QA"
-email: "member4@stud.acs.upb.ro"
+name: "Ionut-Sorin Boraciu"
+role: "Developer"
+email: "ionut_sorin.boraciu@stud.acs.upb.ro"
 # photo: "member4.jpg"
 ---

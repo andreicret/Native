@@ -1,7 +1,7 @@
 ---
 order: 2
-name: "Member 2"
-role: "Backend Developer"
-email: "member2@stud.acs.upb.ro"
+name: "Noela-Elena Pirleci"
+role: "Developer"
+email: "noela_elena.pirleci@stud.acs.upb.ro"
 # photo: "member2.jpg"
 ---
