@@ -29,7 +29,17 @@ const milestones = [
       },
       { title: "Customer discovery plan", content: "" },
       { title: "Customer discovery process in detail", Component: M2Discovery },
-      { title: "How the insights affected our product", content: "" },
+      {
+        title: "How the insights affected our product",
+        wide: true,
+        content: [
+          "Looking at our 15 survey responses, we see that using a foreign language is a real part of most respondents’ lives: 14 had needed to hold a conversation in one during the last six months. Multimedia, such as films, series, videos and music, was the most frequently selected learning method, mentioned by 11 respondents. Courses or tutoring followed with 10, while seven selected conversations with other people. This supports exploring Native’s combination of multimedia content and practical conversation exercises.",
+          "Studies were the most common reason for starting to learn the most recent foreign language, accounting for seven responses, or approximately 47%. This makes learners motivated by their studies a reasonable group to focus on first. However, because we distributed the survey among fellow students, colleagues and family members, we should not assume that this group represents the wider market or is necessarily our strongest customer segment.",
+          "The difficulties described go beyond vocabulary and grammar. Several respondents mentioned speaking, finding someone to practise with regularly, understanding fast speech and abbreviations, or adapting to a dialect. One response specifically described the difficulty of moving from learning individual words to having a free-flowing conversation. These answers are consistent with Native’s focus on bridging the gap between understanding a language and using it naturally, although they do not establish that existing learning apps caused this gap.",
+          "On their last trip, five respondents, or one third, rated their ability to communicate with locals at the lowest point on the scale. At the same time, nine rated it four or five out of five, so the experience was not uniformly difficult. Travelling somewhere whose language they had not studied could explain some low ratings, but the survey did not ask this, so we cannot draw that conclusion.",
+          "Finally, 60% of respondents spent some time learning a foreign language during the previous week, while 40% spent none. Four reported less than 15 minutes, four reported between 15 minutes and one hour, and one reported between one and three hours. This suggests that limited learning time is worth considering when designing Native’s lessons. It does not, however, show that respondents would commit to five or ten minutes of daily practice.",
+        ].join("\n\n"),
+      },
       { title: "Are we ready for Customer Validation?", content: "" },
     ],
   },
@@ -142,8 +152,8 @@ const milestones = [
             </>
           ) : (
             <div class="mt-8 grid gap-x-12 gap-y-8 md:grid-cols-2">
-              {milestone.sections.map(({ title, content, Component }) => (
-                <div class={Component ? "min-w-0 md:col-span-2" : "min-w-0"}>
+              {milestone.sections.map(({ title, content, Component, wide }) => (
+                <div class={Component || wide ? "min-w-0 md:col-span-2" : "min-w-0"}>
                   <h3 class="text-lg font-semibold text-gray-900">{title}</h3>
                   {Component ? (
                     <Component />
