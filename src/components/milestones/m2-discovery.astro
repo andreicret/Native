@@ -1,0 +1,260 @@
+---
+import { Icon } from "astro-icon/components";
+
+const formUrl =
+  "https://docs.google.com/forms/d/1P4umMrgqTMP2lf79zw_XtKjYhddRQBh2yvDdOVYbVb8/viewform";
+
+const steps = [
+  {
+    icon: "bx:bxs-user-detail",
+    title: "Identify segments",
+    description:
+      "We started from the customer segments defined in the first milestone and turned them into hypotheses to test: students, travelers and people moving abroad, and learners who use language for work.",
+  },
+  {
+    icon: "bx:bxs-edit",
+    title: "Design the questionnaire",
+    description:
+      "We wrote a short online form, which takes about 5 minutes to complete, focused on what respondents actually did when learning and using a foreign language.",
+  },
+  {
+    icon: "bx:bxs-check-shield",
+    title: "Validate the questions",
+    description:
+      'We reviewed every question with our lab assistants to make sure it follows the principles of "The Mom Test" and does not lead respondents toward our idea.',
+  },
+  {
+    icon: "bx:bxs-send",
+    title: "Distribute the form",
+    description:
+      "We sent the form to our fellow students, our work colleagues and our families. Responses were anonymous and no email addresses were stored.",
+  },
+  {
+    icon: "bx:bxs-bar-chart-alt-2",
+    title: "Analyze the answers",
+    description:
+      "We collected the responses and looked for patterns in behavior, motivation and difficulties.",
+  },
+];
+
+const audiences = [
+  {
+    icon: "bx:bxs-graduation",
+    title: "Fellow students",
+    description:
+      "Our closest match to the Students and Young Adults segment. Many learn languages for studies, exchange programs or future career opportunities.",
+  },
+  {
+    icon: "bx:bxs-briefcase",
+    title: "Work colleagues",
+    description:
+      "Working professionals who use or need a foreign language at work. They help us see how the problem looks outside the academic environment.",
+  },
+  {
+    icon: "bx:bxs-home-heart",
+    title: "Family",
+    description:
+      "A broader range of ages and backgrounds, including people who travel or have relatives abroad. They help us check whether the problem goes beyond students.",
+  },
+];
+
+const momTestRules = [
+  {
+    title: "Talk about their life, not our idea",
+    description: "No question mentions Native or asks whether respondents would use an app like ours.",
+  },
+  {
+    title: "Ask about specifics in the past",
+    description:
+      'We ask about the last trip, the last week or the last 6 months instead of "would you" or "do you usually" questions.',
+  },
+  {
+    title: "Avoid compliments and hypotheticals",
+    description: "Opinions about the future are unreliable, so we ask about real behavior.",
+  },
+];
+
+const questions = [
+  {
+    text: "Have you had to hold a conversation in a foreign language in the last 6 months?",
+    original: "Ai fost nevoit să porți o conversație într-o limbă străină în ultimele 6 luni?",
+    type: "Single choice",
+    options: ["Yes", "No"],
+    why: "Checks whether the need for real conversation exists, using a concrete time frame.",
+  },
+  {
+    text: "If you know a foreign language, what helped you learn it the most? (up to 3 options)",
+    original:
+      "Dacă știi o limbă străină, ce te-a ajutat cel mai mult să înveți? (Selectați cel mult trei opțiuni)",
+    type: "Checkboxes (max. 3)",
+    options: [
+      "Courses or tutoring",
+      "Language learning apps",
+      "Films, series, videos or music",
+      "Books or articles",
+      "Games",
+      "Conversations with other people",
+      "I did not use any method",
+    ],
+    why: "Shows which methods actually worked for them, without mentioning our product.",
+  },
+  {
+    text: "What was your main goal when you started learning your most recent foreign language?",
+    original:
+      "Care a fost scopul tău principal atunci când ai început să înveți ultima limbă străină?",
+    type: "Single choice",
+    options: ["Work", "Moving to another country", "Studies", "Travel", "Hobby", "Other"],
+    why: "Maps respondents to our customer segments based on a real past decision.",
+  },
+  {
+    text: "What was the hardest thing when you learned a foreign language?",
+    original: "Care a fost cel mai dificil lucru atunci când ai învățat o limbă străină?",
+    type: "Short answer",
+    options: [],
+    why: "An open question that lets respondents describe the problem in their own words.",
+  },
+  {
+    text: "On your last trip, how well were you able to communicate with locals in the local language?",
+    original:
+      "În cadrul ultimei tale călătorii, cât de bine ai reușit să comunici cu localnicii în limba locală?",
+    type: "Linear scale 1–5",
+    options: ["1 = Not at all", "5 = Very well"],
+    why: "Measures conversational confidence in a specific, recent situation.",
+  },
+  {
+    text: "How much time did you spend learning a foreign language last week?",
+    original: "Cât timp ai petrecut în ultima săptămână învățând o limbă străină?",
+    type: "Single choice",
+    options: ["None", "< 15 min", "15 min – 1h", "1h – 3h", "> 3h"],
+    why: "Shows current commitment through real behavior instead of stated intentions.",
+  },
+];
+---
+
+<div class="mt-4 space-y-16">
+  <p class="text-lg text-slate-600 leading-relaxed max-w-3xl">
+    To find out whether the illusion of fluency is a real problem, we ran a customer
+    discovery survey. We identified who to talk to, designed questions that avoid bias,
+    had them reviewed, and sent them to people from each of our target segments.
+  </p>
+
+  <!-- Process timeline -->
+  <div>
+    <h4 class="text-xl font-bold text-gray-900">Our process</h4>
+    <ol class="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+      {
+        steps.map((step, index) => (
+          <li class="relative border-2 border-gray-200 rounded-md p-5">
+            <div class="flex items-center justify-between">
+              <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black">
+                <Icon class="w-5 h-5 text-white" name={step.icon} />
+              </span>
+              <span class="text-3xl font-bold text-gray-200">{index + 1}</span>
+            </div>
+            <h5 class="font-semibold mt-4">{step.title}</h5>
+            <p class="text-sm text-slate-500 mt-2 leading-relaxed">{step.description}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+
+  <!-- Who we reached -->
+  <div>
+    <h4 class="text-xl font-bold text-gray-900">Who we reached and how</h4>
+    <p class="text-slate-600 mt-2 max-w-3xl">
+      We shared the online questionnaire directly with three groups of people we have
+      access to. Each group covers a different part of our customer segments.
+    </p>
+    <div class="mt-6 grid gap-6 md:grid-cols-3">
+      {
+        audiences.map((item) => (
+          <article class="border-2 border-gray-200 rounded-md p-6 transition hover:-translate-y-1 hover:shadow-xl hover:border-black">
+            <Icon class="w-8 h-8 text-black" name={item.icon} />
+            <h5 class="font-semibold text-lg mt-4">{item.title}</h5>
+            <p class="text-slate-500 mt-2 leading-relaxed">{item.description}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- The Mom Test -->
+  <div class="bg-black text-white rounded-lg p-8 md:p-12">
+    <div class="flex items-center gap-3">
+      <Icon class="w-7 h-7" name="bx:bxs-book" />
+      <h4 class="text-xl md:text-2xl font-bold">Validated against "The Mom Test"</h4>
+    </div>
+    <p class="text-gray-300 mt-4 max-w-3xl leading-relaxed">
+      "The Mom Test" by Rob Fitzpatrick is a guide to customer conversations that
+      produce honest answers. Before sending the form, we reviewed every question with
+      our lab assistants to make sure it follows these rules.
+    </p>
+    <ul class="mt-8 grid gap-6 md:grid-cols-3">
+      {
+        momTestRules.map((rule) => (
+          <li class="border border-gray-700 rounded-md p-5">
+            <h5 class="font-semibold">{rule.title}</h5>
+            <p class="text-sm text-gray-400 mt-2 leading-relaxed">{rule.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <!-- Questions -->
+  <div>
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+      <div>
+        <h4 class="text-xl font-bold text-gray-900">The questions we asked</h4>
+        <p class="text-slate-600 mt-2 max-w-3xl">
+          The form was written in Romanian. The original wording is shown under each
+          translation.
+        </p>
+      </div>
+      <a
+        href={formUrl}
+        target="_blank"
+        rel="noopener"
+        class="inline-flex items-center gap-1 self-start sm:self-auto font-semibold text-gray-900 underline decoration-gray-300 underline-offset-4 hover:decoration-gray-900">
+        Open the form
+        <Icon class="w-4 h-4" name="bx:bx-link-external" />
+      </a>
+    </div>
+    <ol class="mt-6 space-y-4">
+      {
+        questions.map((q, index) => (
+          <li class="border-2 border-gray-200 rounded-md p-6">
+            <div class="flex gap-4">
+              <span class="shrink-0 flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-sm font-bold text-gray-900">
+                {index + 1}
+              </span>
+              <div class="min-w-0 flex-1">
+                <div class="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+                  <h5 class="font-semibold text-gray-900">{q.text}</h5>
+                  <span class="shrink-0 self-start px-2 py-1 rounded-full bg-gray-100 text-xs font-semibold text-gray-600">
+                    {q.type}
+                  </span>
+                </div>
+                <p class="text-sm italic text-slate-400 mt-1">{q.original}</p>
+                {q.options.length > 0 && (
+                  <ul class="flex flex-wrap gap-2 mt-4">
+                    {q.options.map((option) => (
+                      <li class="px-3 py-1 rounded-full border border-gray-200 text-sm text-slate-600">
+                        {option}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <p class="text-sm text-slate-600 mt-4 border-l-4 border-black pl-3">
+                  <span class="font-semibold">Why we asked: </span>
+                  {q.why}
+                </p>
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</div>
