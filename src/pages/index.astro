@@ -10,12 +10,14 @@ import Solution from "@/components/solution.astro";
 import Team from "@/components/team.astro";
 import Layout from "@/layouts/Layout.astro";
 import M2Discovery from "@/components/milestones/m2-discovery.astro";
+import MilestonesSidebar from "@/components/milestones-sidebar.astro";
 
 const milestones = [
-  { id: "m1", title: "Fiki & Project description", sections: [] },
+  { id: "m1", title: "Fiki & Project description", short: "Fiki", sections: [] },
   {
     id: "m2",
     title: "Validation 1 (idea)",
+    short: "Validation 1",
     sections: [
       {
         title: "How we identified the problem",
@@ -50,6 +52,7 @@ const milestones = [
   {
     id: "m3",
     title: "Mockups & Landing page",
+    short: "Mockups",
     sections: [
       { title: "Mockups", content: "" },
       { title: "Landing page", content: "" },
@@ -58,6 +61,7 @@ const milestones = [
   {
     id: "m4",
     title: "Persona, Flow, User stories / Use cases, Architecture",
+    short: "Persona & Flow",
     sections: [
       { title: "Persona", content: "" },
       { title: "User flow", content: "" },
@@ -68,6 +72,7 @@ const milestones = [
   {
     id: "m5",
     title: "Validation 2 (design, UX)",
+    short: "Validation 2",
     sections: [
       { title: "Design and UX validation", content: "" },
       { title: "Feedback and improvements", content: "" },
@@ -76,11 +81,13 @@ const milestones = [
   {
     id: "m6",
     title: "Market research",
+    short: "Market research",
     sections: [{ title: "Research and findings", content: "" }],
   },
   {
     id: "m7",
     title: "MVP",
+    short: "MVP",
     sections: [
       { title: "Minimum viable product", content: "" },
       { title: "Demo and implementation", content: "" },
@@ -89,89 +96,79 @@ const milestones = [
   {
     id: "m8",
     title: "First sale",
+    short: "First sale",
     sections: [{ title: "First sale and results", content: "" }],
   },
   {
     id: "m9",
     title: "Slides",
+    short: "Slides",
     sections: [{ title: "Presentation slides", content: "" }],
   },
   {
     id: "m11",
     title: "Overall project presentation (Fiki - final version)",
+    short: "Final Fiki",
     sections: [{ title: "Final project presentation", content: "" }],
   },
 ];
+
 ---
 
-<Layout title="">
+<Layout title="" sidebar>
+  <MilestonesSidebar milestones={milestones} />
   <Container>
-    <Hero />
-    <Team />
-    <div id="milestones" class="mt-24 border-t border-gray-200 pt-10">
-      <h2 class="text-3xl font-bold text-gray-900">Project milestones</h2>
-      <nav aria-label="Project milestones" class="mt-6">
-        <ul class="flex flex-wrap gap-x-6 gap-y-3">
-          {
-            milestones.map((milestone) => (
-              <li>
-                <a
-                  href={`#${milestone.id}`}
-                  aria-label={`${milestone.id.toUpperCase()}: ${milestone.title}`}
-                  class="inline-block py-2 font-semibold text-gray-600 underline decoration-gray-300 underline-offset-8 hover:text-gray-900 hover:decoration-gray-900 focus-visible:outline-2 focus-visible:outline-offset-4">
-                  {milestone.id.toUpperCase()}
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </nav>
-    </div>
-    {
-      milestones.map((milestone) => (
-        <section
-          id={milestone.id}
-          aria-labelledby={`${milestone.id}-title`}
-          class="mt-12 border-t border-gray-200 py-10">
-          <header class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-            <div class="min-w-0">
-              <p class="text-sm font-semibold uppercase tracking-normal text-gray-500">
-                Milestone {milestone.id.slice(1)} ({milestone.id.toUpperCase()})
-              </p>
-              <h2
-                id={`${milestone.id}-title`}
-                class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
-                {milestone.title}
-              </h2>
-            </div>
-          </header>
-          {milestone.id === "m1" ? (
-            <>
-              <Problem />
-              <Solution />
-              <Market />
-              <Competition />
-              <Metrics />
-              <Business />
-            </>
-          ) : (
-            <div class="mt-8 grid gap-x-12 gap-y-8 md:grid-cols-2">
-              {milestone.sections.map(({ title, content, Component, wide }) => (
-                <div class={Component || wide ? "min-w-0 md:col-span-2" : "min-w-0"}>
-                  <h3 class="text-lg font-semibold text-gray-900">{title}</h3>
-                  {Component ? (
-                    <Component />
-                  ) : (
-                    <p class="mt-2 whitespace-pre-line break-words leading-relaxed text-gray-500">
-                      {content || "Not yet documented."}
-                    </p>
-                  )}
+      <Hero />
+      <Team />
+      <div id="milestones" class="mt-12">
+        {
+          milestones.map((milestone) => (
+            <section
+              id={milestone.id}
+              aria-labelledby={`${milestone.id}-title`}
+              class="mt-12 border-t border-gray-200 py-10">
+              <header>
+                <p class="text-sm font-semibold uppercase tracking-normal text-gray-500">
+                  Milestone {milestone.id.slice(1)} ({milestone.id.toUpperCase()})
+                </p>
+                <h2
+                  id={`${milestone.id}-title`}
+                  class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
+                  {milestone.title}
+                </h2>
+              </header>
+              {milestone.id === "m1" ? (
+                <>
+                  <Problem />
+                  <Solution />
+                  <Market />
+                  <Competition />
+                  <Metrics />
+                  <Business />
+                </>
+              ) : (
+                <div class="mt-8 grid gap-x-12 gap-y-8 md:grid-cols-2">
+                  {milestone.sections.map(({ title, content, Component, wide }, index) => {
+                    return (
+                      <div
+                        id={`${milestone.id}-${index + 1}`}
+                        class={Component || wide ? "min-w-0 md:col-span-2" : "min-w-0"}>
+                        <h3 class="text-lg font-semibold text-gray-900">{title}</h3>
+                        {Component ? (
+                          <Component />
+                        ) : (
+                          <p class="mt-2 whitespace-pre-line break-words leading-relaxed text-gray-500">
+                            {content || "Not yet documented."}
+                          </p>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
-              ))}
-            </div>
-          )}
-        </section>
-      ))
-    }
+              )}
+            </section>
+          ))
+        }
+      </div>
   </Container>
 </Layout>

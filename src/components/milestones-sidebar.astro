@@ -1,0 +1,103 @@
+---
+// Side panel styled after the Mugen Studio menu
+// (https://www.navbar.gallery/navbar/mugen-studio): oversized labels with
+// muted [tags] and blocks split by hairlines.
+// Fixed on the left from lg up; a full-screen overlay behind a button below that.
+
+export interface Props {
+  milestones: { id: string; title: string; short: string }[];
+}
+
+const { milestones } = Astro.props;
+---
+
+<aside
+  data-sidebar
+  class="fixed inset-0 z-40 hidden flex-col overflow-y-auto border-r border-slate-200 bg-white text-slate-900 data-[open]:flex lg:right-auto lg:flex lg:w-72 xl:w-[22rem]">
+  <div class="px-6 pb-10 pt-8 xl:px-9">
+    <div class="flex items-center justify-between">
+      <p class="text-sm text-slate-400">Milestones</p>
+      <button
+        type="button"
+        data-sidebar-close
+        aria-label="Close milestones"
+        class="-m-2 p-2 text-slate-400 hover:text-slate-900 lg:hidden">
+        <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true">
+          <path d="M3 3l16 16M19 3L3 19" stroke="currentColor" stroke-width="1.6"></path>
+        </svg>
+      </button>
+    </div>
+    <nav aria-label="Project milestones" class="mt-4">
+      <ul class="space-y-4">
+        {
+          milestones.map((milestone) => (
+            <li>
+              <a
+                href={`#${milestone.id}`}
+                data-toc-link={milestone.id}
+                title={milestone.title}
+                class="sidebar-link inline-block whitespace-nowrap text-[22px] font-semibold leading-[1.25] tracking-tight text-black transition-opacity duration-200 hover:opacity-60 xl:text-[27px]">
+                {milestone.short}{" "}
+                <span class="font-normal text-slate-400">[{milestone.id.toUpperCase()}]</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="mt-auto border-t border-slate-200 px-6 py-6 text-sm text-slate-500 xl:px-9">
+    <a href="#top" class="text-black underline decoration-slate-300 underline-offset-4 hover:decoration-slate-900">Introduction</a>
+    <a href="#team" class="ml-5 text-black underline decoration-slate-300 underline-offset-4 hover:decoration-slate-900">Team</a>
+    <p class="mt-4">© {new Date().getFullYear()} Native</p>
+  </div>
+</aside>
+
+<button
+  type="button"
+  data-sidebar-open
+  aria-label="Open milestones"
+  class="fixed bottom-5 right-5 z-30 flex items-center gap-2 rounded-full bg-black px-5 py-3 text-sm font-medium text-white shadow-lg lg:hidden">
+  Milestones
+  <span data-sidebar-current class="text-neutral-400"></span>
+</button>
+
+<script>
+  const sidebar = document.querySelector<HTMLElement>("[data-sidebar]")!;
+  const current = document.querySelector<HTMLElement>("[data-sidebar-current]");
+  const links = [...sidebar.querySelectorAll<HTMLAnchorElement>("[data-toc-link]")];
+
+  const setOpen = (open: boolean) => {
+    sidebar.toggleAttribute("data-open", open);
+    document.documentElement.style.overflow = open ? "hidden" : "";
+  };
+  document.querySelector("[data-sidebar-open]")?.addEventListener("click", () => setOpen(true));
+  sidebar.querySelector("[data-sidebar-close]")?.addEventListener("click", () => setOpen(false));
+  sidebar.querySelectorAll("a[href^='#']").forEach((a) => a.addEventListener("click", () => setOpen(false)));
+  addEventListener("keydown", (e) => e.key === "Escape" && setOpen(false));
+
+  // The current milestone is the last one whose top has passed a third of the viewport.
+  function update() {
+    let active: HTMLAnchorElement | undefined;
+    for (const link of links) {
+      const el = document.getElementById(link.dataset.tocLink!);
+      if (el && el.getBoundingClientRect().top <= innerHeight / 3) active = link;
+    }
+    links.forEach((link) =>
+      link === active ? link.setAttribute("aria-current", "location") : link.removeAttribute("aria-current")
+    );
+    if (current) current.textContent = active ? `[${active.dataset.tocLink!.toUpperCase()}]` : "";
+  }
+
+  let frame = 0;
+  addEventListener(
+    "scroll",
+    () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(update);
+    },
+    { passive: true }
+  );
+  update();
+</script>

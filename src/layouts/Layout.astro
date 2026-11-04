@@ -8,6 +8,7 @@ import "../styles/global.css";
 
 export interface Props {
   title: string;
+  sidebar?: boolean;
 }
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -19,7 +20,7 @@ const resolvedImageWithDomain = new URL(
   Astro.site
 ).toString();
 
-const { title } = Astro.props;
+const { title, sidebar = false } = Astro.props;
 
 const makeTitle = title
   ? title + " | " + "Native"
@@ -51,7 +52,7 @@ const makeTitle = title
       }}
     />
   </head>
-  <body>
+  <body class:list={[sidebar && "lg:pl-72 xl:pl-[22rem]"]}>
     <Navbar />
     <slot />
     <Footer />
