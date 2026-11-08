@@ -1,6 +1,6 @@
 import m2 from "./m2";
 
-export type MilestoneComponent = "m1-overview" | "m2-discovery";
+export type MilestoneComponent = "m1-overview" | "m2-discovery" | "m3-wireframe";
 
 export interface MilestoneSection {
   title: string;
@@ -26,10 +26,10 @@ export const milestones: Milestone[] = [
   m2,
   {
     id: "m3",
-    title: "Mockups & Landing page",
-    short: "Mockups",
+    title: "Wireframe & Landing page",
+    short: "Wireframe",
     sections: [
-      { title: "Mockups", content: "" },
+      { title: "Wireframe", component: "m3-wireframe" },
       { title: "Landing page", href: `${base}/landing/`, linkText: "Visit the Native landing page" },
     ],
   },
