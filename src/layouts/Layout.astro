@@ -9,6 +9,8 @@ import "../styles/global.css";
 export interface Props {
   title: string;
   sidebar?: boolean;
+  chrome?: boolean;
+  description?: string;
 }
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
@@ -20,7 +22,12 @@ const resolvedImageWithDomain = new URL(
   Astro.site
 ).toString();
 
-const { title, sidebar = false } = Astro.props;
+const {
+  title,
+  sidebar = false,
+  chrome = true,
+  description = "Native - Speak like a Native: team, problem, solution and business model.",
+} = Astro.props;
 
 const makeTitle = title
   ? title + " | " + "Native"
@@ -37,7 +44,7 @@ const makeTitle = title
 
     <SEO
       title={makeTitle}
-      description="Native - Speak like a Native: team, problem, solution and business model."
+      description={description}
       canonical={canonicalURL}
       openGraph={{
         basic: {
@@ -52,10 +59,10 @@ const makeTitle = title
       }}
     />
   </head>
-  <body class:list={[sidebar && "lg:pl-72 xl:pl-[22rem]"]}>
-    <Navbar />
+  <body class:list={[sidebar && "lg:pl-56 xl:pl-64"]}>
+    {chrome && <Navbar />}
     <slot />
-    <Footer />
+    {chrome && <Footer />}
     <style is:global>
       html {
         scroll-behavior: smooth;

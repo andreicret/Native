@@ -1,0 +1,41 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Navbar from "@/components/landing/navbar.astro";
+import LanguagePicker from "@/components/landing/language-picker.astro";
+---
+
+<Layout
+  title="Learn a language"
+  description="Native - Learn a new language and speak with confidence."
+  chrome={false}>
+  <div class="landing-page">
+    <Navbar />
+    <main>
+      <LanguagePicker />
+    </main>
+  </div>
+</Layout>
+
+<style>
+  .landing-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    background: #fff;
+    color: #111;
+    letter-spacing: 0;
+  }
+
+  main {
+    display: grid;
+    flex: 1;
+    place-items: center;
+    padding: 80px 24px 120px;
+  }
+
+  @media (max-width: 540px) {
+    main {
+      padding: 64px 24px 80px;
+    }
+  }
+</style>

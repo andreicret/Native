@@ -1,0 +1,57 @@
+---
+import M1Overview from "@/components/milestones/m1-overview.astro";
+import M2Discovery from "@/components/milestones/m2-discovery.astro";
+import type { Milestone, MilestoneComponent } from "@/data/milestones";
+
+export interface Props {
+  milestone: Milestone;
+}
+
+const { milestone } = Astro.props;
+const components = {
+  "m1-overview": M1Overview,
+  "m2-discovery": M2Discovery,
+} satisfies Record<MilestoneComponent, typeof M1Overview>;
+const Overview = milestone.component ? components[milestone.component] : undefined;
+---
+
+<section
+  id={milestone.id}
+  aria-labelledby={`${milestone.id}-title`}
+  class="mt-12 border-t border-gray-200 py-10">
+  <header>
+    <p class="text-sm font-semibold uppercase tracking-normal text-gray-500">
+      Milestone {milestone.id.slice(1)} ({milestone.id.toUpperCase()})
+    </p>
+    <h2 id={`${milestone.id}-title`} class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">
+      {milestone.title}
+    </h2>
+  </header>
+  {
+    Overview ? (
+      <Overview />
+    ) : (
+      <div class="mt-8 grid gap-x-12 gap-y-8 md:grid-cols-2">
+        {milestone.sections.map(({ title, content, component, wide, href, linkText }, index) => {
+          const Component = component ? components[component] : undefined;
+          return (
+          <div id={`${milestone.id}-${index + 1}`} class={Component || wide ? "min-w-0 md:col-span-2" : "min-w-0"}>
+            <h3 class="text-lg font-semibold text-gray-900">{title}</h3>
+            {Component ? (
+              <Component />
+            ) : href ? (
+              <a href={href} class="mt-2 inline-block text-black underline underline-offset-4 hover:text-gray-600">
+                {linkText || title}
+              </a>
+            ) : (
+              <p class="mt-2 whitespace-pre-line break-words leading-relaxed text-gray-500">
+                {content || "Not yet documented."}
+              </p>
+            )}
+          </div>
+          );
+        })}
+      </div>
+    )
+  }
+</section>

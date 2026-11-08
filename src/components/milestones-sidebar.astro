@@ -13,8 +13,8 @@ const { milestones } = Astro.props;
 
 <aside
   data-sidebar
-  class="fixed inset-0 z-40 hidden flex-col overflow-y-auto border-r border-slate-200 bg-white text-slate-900 data-[open]:flex lg:right-auto lg:flex lg:w-72 xl:w-[22rem]">
-  <div class="px-6 pb-10 pt-8 xl:px-9">
+  class="fixed inset-0 z-40 hidden flex-col overflow-y-auto border-r border-slate-200 bg-white text-slate-900 data-[open]:flex lg:right-auto lg:flex lg:w-56 xl:w-64">
+  <div class="px-6 pb-10 pt-8 lg:px-5 xl:px-6">
     <div class="flex items-center justify-between">
       <p class="text-sm text-slate-400">Milestones</p>
       <button
@@ -28,7 +28,7 @@ const { milestones } = Astro.props;
       </button>
     </div>
     <nav aria-label="Project milestones" class="mt-4">
-      <ul class="space-y-4">
+      <ul class="space-y-4 lg:space-y-3">
         {
           milestones.map((milestone) => (
             <li>
@@ -36,7 +36,7 @@ const { milestones } = Astro.props;
                 href={`#${milestone.id}`}
                 data-toc-link={milestone.id}
                 title={milestone.title}
-                class="sidebar-link inline-block whitespace-nowrap text-[22px] font-semibold leading-[1.25] tracking-tight text-black transition-opacity duration-200 hover:opacity-60 xl:text-[27px]">
+                class="sidebar-link inline-block whitespace-nowrap text-[22px] font-semibold leading-[1.25] tracking-tight text-black transition-opacity duration-200 hover:opacity-60 lg:text-base xl:text-lg">
                 {milestone.short}{" "}
                 <span class="font-normal text-slate-400">[{milestone.id.toUpperCase()}]</span>
               </a>
@@ -47,7 +47,7 @@ const { milestones } = Astro.props;
     </nav>
   </div>
 
-  <div class="mt-auto border-t border-slate-200 px-6 py-6 text-sm text-slate-500 xl:px-9">
+  <div class="mt-auto border-t border-slate-200 px-6 py-6 text-sm text-slate-500 lg:px-5 xl:px-6">
     <a href="#top" class="text-black underline decoration-slate-300 underline-offset-4 hover:decoration-slate-900">Introduction</a>
     <a href="#team" class="ml-5 text-black underline decoration-slate-300 underline-offset-4 hover:decoration-slate-900">Team</a>
     <p class="mt-4">© {new Date().getFullYear()} Native</p>
