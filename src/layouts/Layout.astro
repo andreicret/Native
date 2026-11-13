@@ -10,6 +10,7 @@ export interface Props {
   title: string;
   sidebar?: boolean;
   chrome?: boolean;
+  lang?: string;
   description?: string;
 }
 
@@ -26,6 +27,7 @@ const {
   title,
   sidebar = false,
   chrome = true,
+  lang = "en",
   description = "Native - Speak like a Native: team, problem, solution and business model.",
 } = Astro.props;
 
@@ -35,7 +37,7 @@ const makeTitle = title
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />

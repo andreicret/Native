@@ -1,18 +1,26 @@
 ---
+import { Icon } from "astro-icon/components";
 import Layout from "@/layouts/Layout.astro";
 import Navbar from "@/components/landing/navbar.astro";
 import LanguagePicker from "@/components/landing/language-picker.astro";
 ---
 
 <Layout
-  title="Learn a language"
-  description="Native - Learn a new language and speak with confidence."
+  title="Învață o limbă"
+  lang="ro"
+  description="Native - Învață o limbă nouă și vorbește cu încredere."
   chrome={false}>
   <div class="landing-page">
     <Navbar />
     <main>
       <LanguagePicker />
     </main>
+    <footer class="mobile-download">
+      <button type="button" aria-disabled="true">
+        <Icon name="bx:download" width={20} height={20} aria-hidden="true" />
+        Descarcă aplicația
+      </button>
+    </footer>
   </div>
 </Layout>
 
@@ -33,9 +41,46 @@ import LanguagePicker from "@/components/landing/language-picker.astro";
     padding: 80px 24px 120px;
   }
 
+  .mobile-download {
+    display: none;
+  }
+
   @media (max-width: 540px) {
     main {
       padding: 64px 24px 80px;
+    }
+
+    .mobile-download {
+      display: flex;
+      justify-content: center;
+      padding: 0 24px calc(32px + env(safe-area-inset-bottom));
+    }
+
+    .mobile-download button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      max-width: 320px;
+      border: 0;
+      border-radius: 999px;
+      padding: 16px 28px;
+      background: #111;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 500;
+      box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
+      transition: background-color 0.2s ease;
+    }
+
+    .mobile-download button:active {
+      background: #333;
+    }
+
+    .mobile-download button:focus-visible {
+      outline: 2px solid #111;
+      outline-offset: 4px;
     }
   }
 </style>
