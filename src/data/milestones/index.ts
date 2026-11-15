@@ -1,6 +1,6 @@
 import m2 from "./m2";
 
-export type MilestoneComponent = "m1-overview" | "m2-discovery" | "m3-wireframe";
+export type MilestoneComponent = "m1-overview" | "m2-discovery" | "m3-wireframe" | "m4-persona";
 
 export interface MilestoneSection {
   title: string;
@@ -37,12 +37,8 @@ export const milestones: Milestone[] = [
     id: "m4",
     title: "Persona, Flow, User stories / Use cases, Architecture",
     short: "Persona & Flow",
-    sections: [
-      { title: "Persona", content: "" },
-      { title: "User flow", content: "" },
-      { title: "User stories / Use cases", content: "" },
-      { title: "Architecture", content: "" },
-    ],
+    component: "m4-persona",
+    sections: [],
   },
   {
     id: "m5",

@@ -1,0 +1,310 @@
+---
+import { Icon } from "astro-icon/components";
+
+const interviewsUrl = "https://youtu.be/4boMWo9jgFU";
+
+const facts = [
+  { icon: "bx:bxs-calendar", label: "Age", value: "22 years old" },
+  {
+    icon: "bx:bxs-graduation",
+    label: "Occupation",
+    value: "4th year student, Faculty of Computer Engineering, POLITEHNICA Bucharest",
+  },
+  { icon: "bx:bxs-map", label: "Location", value: "Bucharest, Romania" },
+];
+
+const profile = [
+  {
+    icon: "bx:bx-run",
+    title: "Behavior",
+    items: [
+      {
+        title: "Learns on his own",
+        description:
+          "Prefers to learn at his own pace, using multimedia content: short videos, interviews, documentaries.",
+      },
+      {
+        title: "Real-world use over rules",
+        description:
+          "Doesn't want to learn grammar rules by heart; he wants to learn how to use his actual knowledge in real-world contexts.",
+      },
+      {
+        title: "Short, flexible sessions",
+        description:
+          "Has a busy schedule because he's in his last year of studies, so he wants his learning sessions to be short and flexible.",
+      },
+    ],
+  },
+  {
+    icon: "bx:bxs-heart",
+    title: "Needs",
+    items: [
+      {
+        title: "English for his career",
+        description:
+          "He wants to improve his fluency in English in order to apply for an international internship or participate in tech conferences, where English is mandatory.",
+      },
+      {
+        title: "Grammar in context",
+        description:
+          "He needs to learn grammar structures naturally through real-world scenarios, audio-visual cues and sentence-construction exercises.",
+      },
+      {
+        title: "Dual-language subtitles",
+        description:
+          "He needs tools like dual-language subtitles to subconsciously connect meanings and speed up his comprehension of natural speech.",
+      },
+    ],
+  },
+  {
+    icon: "bx:bxs-error",
+    title: "Problems",
+    items: [
+      {
+        title: "The illusion of fluency",
+        description:
+          "He understands almost everything he hears or sees in a video, but whenever he needs to speak up in a meeting or to a native speaker, he can't seem to find his words.",
+      },
+      {
+        title: "Frustration with current apps",
+        description:
+          "He feels like traditional apps only teach him vocabulary exercises without helping him construct complex ideas that would appear naturally during a conversation.",
+      },
+    ],
+  },
+];
+
+const filters = [
+  {
+    icon: "bx:bxs-flag",
+    title: "Preferred language",
+    description: "The user selects from a dropdown list the language that he wants to practice.",
+  },
+  {
+    icon: "bx:bxs-badge-check",
+    title: "Proficiency level",
+    description:
+      "The user selects a proficiency level. If he is not sure which level to select, he can take a test so that the app recommends an appropriate level for his knowledge.",
+  },
+  {
+    icon: "bx:bxs-shapes",
+    title: "Learning category",
+    description: "The user selects from a dropdown list a topic that he will exercise on.",
+  },
+];
+
+const lessonScreens = [
+  {
+    icon: "bx:bxs-shapes",
+    title: "Pick a lesson",
+    description:
+      "On the main page, the user selects their preferred language, proficiency level and learning category using the top buttons, then picks a lesson from the grid of available lessons.",
+  },
+  {
+    icon: "bx:bxs-video",
+    title: "Watch the video",
+    description:
+      "The app transitions to the video player. The user watches a short video related to the chosen topic, with dual-language subtitles displayed at the bottom of the screen.",
+  },
+  {
+    icon: "bx:bxs-pencil",
+    title: "Practise",
+    description:
+      "When the video ends, the user is redirected to interactive exercises. The exercises are listed on the left, the selected one appears in the center, and the video stays in a small window at the top so it can be rewatched.",
+  },
+  {
+    icon: "bx:bxs-badge-check",
+    title: "See progress",
+    description:
+      "After completing all the exercises, the user returns to the first screen, where he can see his progress and the remaining lessons.",
+  },
+];
+
+const stories = [
+  {
+    want: "select a specific language, a proficiency level and a learning category from the main page",
+    soThat: "I can access a customized list of lessons tailored to my current skills and interests.",
+  },
+  {
+    want: "view a grid of lessons based on my selected filters",
+    soThat: "I can track my progress and choose what I want to start learning next.",
+  },
+  {
+    want: "watch short and engaging video lessons related to my chosen topic/category",
+    soThat: "I can experience real-world contexts instead of learning isolated words by heart.",
+  },
+  {
+    want: "see dual-language subtitles while watching the video",
+    soThat: "I can link the meanings of the words and understand fast expressions more easily.",
+  },
+  {
+    want: "transition to interactive exercises right after I finish watching a video",
+    soThat: "I can test my comprehension of the context I just watched.",
+  },
+  {
+    want: "complete sentence-building exercises based on the video I just watched",
+    soThat: "I can practise constructing more complex ideas.",
+  },
+  {
+    want: "navigate through multiple exercises for each lesson",
+    soThat: "I can confidently move to the next topic.",
+  },
+];
+---
+
+<div class="mt-8 space-y-16">
+  <!-- Interviews -->
+  <a
+    href={interviewsUrl}
+    target="_blank"
+    rel="noopener"
+    class="group flex items-center gap-4 border-2 border-gray-200 rounded-md p-5 transition hover:border-black">
+    <span class="flex shrink-0 items-center justify-center w-12 h-12 rounded-full bg-black">
+      <Icon class="w-6 h-6 text-white" name="bx:bxs-microphone" />
+    </span>
+    <span class="min-w-0 flex-1">
+      <span class="block font-semibold text-gray-900">Interviews</span>
+      <span class="block text-sm text-slate-500">Watch the interviews video on YouTube</span>
+    </span>
+    <Icon
+      class="w-6 h-6 shrink-0 text-gray-400 transition group-hover:text-black"
+      name="bx:bx-link-external"
+    />
+  </a>
+
+  <!-- Persona -->
+  <div>
+    <h3 class="text-xl font-bold text-gray-900">Persona</h3>
+    <article class="mt-6 border-2 border-gray-200 rounded-md overflow-hidden">
+      <header class="bg-black text-white p-6 md:p-8">
+        <div class="flex items-center gap-5">
+          <span
+            class="flex shrink-0 items-center justify-center w-16 h-16 rounded-full bg-white text-black text-2xl font-bold"
+            aria-hidden="true">
+            A
+          </span>
+          <div>
+            <h4 class="text-2xl font-bold">Alex</h4>
+            <p class="text-gray-300">The Independent Language Learner</p>
+          </div>
+        </div>
+        <dl class="mt-8 grid gap-4 sm:grid-cols-3">
+          {
+            facts.map((fact) => (
+              <div class="border border-gray-700 rounded-md p-4">
+                <dt class="flex items-center gap-2 text-sm text-gray-400">
+                  <Icon class="w-4 h-4" name={fact.icon} />
+                  {fact.label}
+                </dt>
+                <dd class="mt-1 font-medium leading-snug">{fact.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </header>
+      <div class="grid md:grid-cols-3 divide-y-2 md:divide-y-0 md:divide-x-2 divide-gray-200">
+        {
+          profile.map((group) => (
+            <section class="p-6 md:p-8">
+              <h5 class="flex items-center gap-2 font-bold text-gray-900">
+                <Icon class="w-5 h-5" name={group.icon} />
+                {group.title}
+              </h5>
+              <div class="mt-5 space-y-5">
+                {group.items.map((item) => (
+                  <div>
+                    <p class="font-semibold text-gray-900">{item.title}</p>
+                    <p class="mt-1 text-sm text-slate-500 leading-relaxed">{item.description}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+          ))
+        }
+      </div>
+    </article>
+  </div>
+
+  <!-- User flow -->
+  <div>
+    <h3 class="text-xl font-bold text-gray-900">User flow</h3>
+
+    <div class="mt-6">
+      <h4 class="font-semibold text-gray-900">
+        <span class="text-gray-400">Flow 1</span> · Selecting the preferred settings for the learning session
+      </h4>
+      <p class="mt-2 text-slate-600 max-w-3xl leading-relaxed">
+        After opening the app, the user lands on the main page. At the top of the screen there
+        are 3 buttons, aligned from left to right:
+      </p>
+      <ol class="mt-5 grid gap-4 md:grid-cols-3">
+        {
+          filters.map((filter, index) => (
+            <li class="border-2 border-gray-200 rounded-md p-5">
+              <div class="flex items-center justify-between">
+                <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black">
+                  <Icon class="w-5 h-5 text-white" name={filter.icon} />
+                </span>
+                <span class="text-3xl font-bold text-gray-200">{index + 1}</span>
+              </div>
+              <h5 class="font-semibold mt-4">{filter.title}</h5>
+              <p class="text-sm text-slate-500 mt-2 leading-relaxed">{filter.description}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+
+    <div class="mt-12">
+      <h4 class="font-semibold text-gray-900">
+        <span class="text-gray-400">Flow 2</span> · Completing a lesson in the Native app
+      </h4>
+      <ol class="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {
+          lessonScreens.map((screen, index) => (
+            <li class="border-2 border-gray-200 rounded-md p-5">
+              <div class="flex items-center justify-between">
+                <span class="flex items-center justify-center w-10 h-10 rounded-full bg-black">
+                  <Icon class="w-5 h-5 text-white" name={screen.icon} />
+                </span>
+                <span class="text-sm font-semibold uppercase text-gray-400">Screen {index + 1}</span>
+              </div>
+              <h5 class="font-semibold mt-4">{screen.title}</h5>
+              <p class="text-sm text-slate-500 mt-2 leading-relaxed">{screen.description}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </div>
+
+  <!-- User stories -->
+  <div>
+    <h3 class="text-xl font-bold text-gray-900">User stories / Use cases</h3>
+    <ol class="mt-6 grid gap-4 md:grid-cols-2">
+      {
+        stories.map((story, index) => (
+          <li class="flex gap-4 border-2 border-gray-200 rounded-md p-5">
+            <span class="flex shrink-0 items-center justify-center w-9 h-9 rounded-full bg-black text-sm font-bold text-white">
+              {index + 1}
+            </span>
+            <div>
+              <p class="text-gray-900 leading-relaxed">
+                <span class="text-slate-500">As a user, I want to</span> {story.want}
+              </p>
+              <p class="mt-2 text-sm text-slate-500 leading-relaxed">
+                <span class="font-semibold text-gray-900">so that</span> {story.soThat}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+
+  <!-- Architecture -->
+  <div>
+    <h3 class="text-xl font-bold text-gray-900">Architecture</h3>
+    <p class="mt-2 text-gray-500">Not yet documented.</p>
+  </div>
+</div>
