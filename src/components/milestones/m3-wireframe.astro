@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import wireframe from "@/assets/Wireframe.jpeg";
+import wireframe from "@/assets/wireframe.png";
 ---
 
 <figure class="mt-4">
@@ -11,7 +11,7 @@ import wireframe from "@/assets/Wireframe.jpeg";
     aria-label="Open the Native wireframe at full size">
     <Image
       src={wireframe}
-      alt="Hand-drawn Native wireframe showing lesson selection by language, level and category, a video lesson with bilingual text, and phrase-completion exercises."
+      alt="Native mobile wireframe with four screens: a lesson grid filtered by language, level and category; the same screen with the language, level and category dropdowns open; a full-screen video player; and an exercise screen with the video at the top, a list of exercises, a phrase-completion task and a progress bar."
       widths={[640, 1080]}
       sizes="(max-width: 1023px) 100vw, (max-width: 1279px) calc(100vw - 224px), calc(100vw - 256px)"
       class="h-auto w-full max-w-5xl"
