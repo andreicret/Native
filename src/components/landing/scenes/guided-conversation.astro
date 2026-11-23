@@ -1,0 +1,79 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<div class="guided-conversation" role="img" aria-label="Demonstrație animată: barista salută, răspunsul Je voudrais un café se completează în câmp și apare în conversație. Un simbol de microfon arată alternativa de dictare vocală, fără a înregistra vizitatorul.">
+  <div class="chat-messages" aria-hidden="true">
+    <div class="chat-bubble bubble-first scene-motion" aria-hidden="true">
+      <span class="speaker">Barista</span>
+      <p>Bonjour ! Vous désirez ?</p>
+    </div>
+    <div class="chat-bubble bubble-user scene-motion" aria-hidden="true">
+      <span class="speaker">Tu · exemplu de răspuns</span>
+      <p>Je voudrais un café.</p>
+    </div>
+    <div class="chat-bubble bubble-last scene-motion" aria-hidden="true">
+      <span class="speaker">Barista</span>
+      <p>Sur place ou à emporter ?</p>
+    </div>
+  </div>
+  <div class="conversation-hints" aria-hidden="true">
+    <p class="chat-hint hint-first scene-motion" aria-hidden="true"><strong>Începe cu o dorință.</strong> Subiect + verb: „Je voudrais…” = „Aș dori…”</p>
+    <p class="chat-hint hint-second scene-motion" aria-hidden="true"><strong>Completează propoziția.</strong> „Je” + „voudrais” + „un café”.</p>
+    <p class="chat-hint hint-third scene-motion" aria-hidden="true"><strong>Alege în funcție de situație.</strong> „Sur place” = aici · „À emporter” = la pachet.</p>
+  </div>
+  <div class="demo-composer" aria-hidden="true">
+    <div class="demo-input">
+      <span class="reply-placeholder scene-motion">Răspunsul tău în franceză…</span>
+      <span class="typed-answer scene-motion">Je voudrais un café.</span>
+    </div>
+    <span class="dictation-option scene-motion" title="Dictare vocală · demonstrație">
+      <Icon name="bx:bx-microphone" width={21} height={21} />
+    </span>
+  </div>
+  <p class="dictation-note" aria-hidden="true">
+    <span class="speech-bars"><span class="scene-motion"></span><span class="scene-motion"></span><span class="scene-motion"></span></span>
+    Text sau dictare vocală
+  </p>
+</div>
+
+<style>
+  .guided-conversation { display: grid; grid-template-rows: 192px 64px 48px 24px; align-content: center; gap: 12px; width: min(100%, 560px); height: var(--demo-height, 420px); }
+  .chat-messages { display: flex; flex-direction: column; gap: 7px; }
+  .chat-bubble { align-self: flex-start; max-width: 92%; border: 1px solid #e5e5e5; border-radius: 8px; padding: 7px 12px; background: #f7f7f7; }
+  .speaker { display: block; margin-bottom: 2px; color: #777; font-size: 9px; }
+  .chat-bubble p { font-size: 13px; line-height: 1.5; }
+  .bubble-first { animation: first-message var(--scene-duration, 5s) ease infinite; }
+  .bubble-user { align-self: flex-end; border-color: #111; background: #111; color: #fff; animation: second-message var(--scene-duration, 5s) ease infinite; }
+  .bubble-user .speaker { color: #ccc; }
+  .bubble-last { animation: third-message var(--scene-duration, 5s) ease infinite; }
+  .conversation-hints { position: relative; border-left: 2px solid #333; background: #f7f7f7; }
+  .chat-hint { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 7px 12px; color: #666; font-size: 11px; line-height: 1.5; }
+  .chat-hint strong { color: #222; font-weight: 500; }
+  .hint-first { animation: first-hint var(--scene-duration, 5s) linear infinite; }
+  .hint-second { animation: second-hint var(--scene-duration, 5s) linear infinite; }
+  .hint-third { animation: third-hint var(--scene-duration, 5s) linear infinite; }
+  .demo-composer { display: grid; grid-template-columns: minmax(0, 1fr) 44px; gap: 8px; }
+  .demo-input { position: relative; min-width: 0; height: 48px; overflow: hidden; border: 1px solid #ccc; border-radius: 4px; background: #fff; font-size: 14px; }
+  .reply-placeholder { position: absolute; top: 50%; left: 12px; max-width: calc(100% - 24px); overflow: hidden; transform: translateY(-50%); white-space: nowrap; color: #999; animation: placeholder-cycle var(--scene-duration, 5s) linear infinite; }
+  .typed-answer { position: absolute; top: 50%; left: 12px; display: block; width: max-content; max-width: 0; overflow: hidden; transform: translateY(-50%); border-right: 1px solid #111; white-space: nowrap; color: #111; animation: type-answer var(--scene-duration, 5s) steps(20, end) infinite; }
+  .dictation-option { display: grid; place-items: center; border: 1px solid #ccc; border-radius: 4px; background: #fff; color: #555; animation: dictation-cue var(--scene-duration, 5s) linear infinite; }
+  .dictation-note { display: flex; align-items: center; justify-content: center; gap: 8px; color: #888; font-size: 11px; }
+  .speech-bars { display: flex; align-items: center; gap: 2px; height: 16px; }
+  .speech-bars span { width: 2px; height: 12px; background: #777; animation: voice-wave .6s ease-in-out infinite alternate; }
+  .speech-bars span:nth-child(2) { animation-delay: .2s; }
+  .speech-bars span:nth-child(3) { animation-delay: .4s; }
+  .scene-motion { animation-play-state: var(--scene-play-state, paused); }
+  @keyframes first-message { 0% { opacity: 0; transform: translateY(6px); } 6%, 100% { opacity: 1; transform: translateY(0); } }
+  @keyframes second-message { 0%, 59% { opacity: 0; transform: translateY(6px); } 65%, 100% { opacity: 1; transform: translateY(0); } }
+  @keyframes third-message { 0%, 77% { opacity: 0; transform: translateY(6px); } 85%, 100% { opacity: 1; transform: translateY(0); } }
+  @keyframes first-hint { 0%, 17% { opacity: 1; } 18%, 100% { opacity: 0; } }
+  @keyframes second-hint { 0%, 17% { opacity: 0; } 18%, 76% { opacity: 1; } 77%, 100% { opacity: 0; } }
+  @keyframes third-hint { 0%, 76% { opacity: 0; } 77%, 100% { opacity: 1; } }
+  @keyframes placeholder-cycle { 0%, 17% { opacity: 1; } 18%, 64% { opacity: 0; } 65%, 100% { opacity: 1; } }
+  @keyframes type-answer { 0%, 18% { max-width: 0; opacity: 0; } 19% { max-width: 0; opacity: 1; } 54%, 61% { max-width: 20ch; opacity: 1; } 62%, 100% { max-width: 0; opacity: 0; } }
+  @keyframes dictation-cue { 0%, 17%, 65%, 100% { background: #fff; color: #555; border-color: #ccc; } 24%, 59% { background: #111; color: #fff; border-color: #111; } }
+  @keyframes voice-wave { from { transform: scaleY(.4); } to { transform: scaleY(1); } }
+  @media (max-width: 540px) { .chat-bubble p { font-size: 12px; } .chat-hint { padding-right: 8px; padding-left: 8px; font-size: 10px; } .demo-input { font-size: 12px; } .dictation-note { font-size: 10px; } }
+  @media (prefers-reduced-motion: reduce) { .scene-motion { animation: none; } .hint-first, .hint-second { display: none; } .typed-answer { opacity: 0; } }
+</style>

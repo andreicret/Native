@@ -1,0 +1,212 @@
+---
+import { Icon } from "astro-icon/components";
+
+const formId = import.meta.env.PUBLIC_FORMSPREE_FORM_ID?.trim();
+const endpoint = formId ? `https://formspree.io/f/${encodeURIComponent(formId)}` : "";
+---
+
+<section class="email-signup" data-email-signup aria-labelledby="signup-heading">
+  <h2 id="signup-heading">
+    Vrei să înveți <strong data-selected-language class="font-bold">engleză</strong> cu Native?
+  </h2>
+  <p class="signup-intro">Lasă-ne adresa de e-mail și te anunțăm când poți începe.</p>
+  <form data-signup-form data-endpoint={endpoint} action={endpoint || undefined} method="post">
+    <input type="hidden" name="language" value="Engleză" />
+    <div data-signup-fields>
+      <label class="sr-only" for="signup-email">Adresa ta de e-mail</label>
+      <div class="email-row">
+        <input
+          id="signup-email"
+          type="email"
+          name="email"
+          placeholder="Adresa ta de e-mail"
+          autocomplete="email"
+          inputmode="email"
+          required
+        />
+        <button type="submit" disabled>
+          <span data-submit-label>Anunță-mă la lansare</span>
+          <Icon name="bx:bx-right-arrow-alt" width={20} height={20} aria-hidden="true" />
+        </button>
+      </div>
+      <label class="honeypot" aria-hidden="true">
+        Website
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" />
+      </label>
+    </div>
+    <p class="form-status" data-signup-status role="status" aria-live="polite" tabindex="-1"></p>
+  </form>
+</section>
+
+<script>
+  const section = document.querySelector<HTMLElement>("[data-email-signup]");
+
+  if (section) {
+    const form = section.querySelector<HTMLFormElement>("[data-signup-form]")!;
+    const fields = form.querySelector<HTMLElement>("[data-signup-fields]")!;
+    const languageInput = form.querySelector<HTMLInputElement>('[name="language"]')!;
+    const languageLabel = section.querySelector<HTMLElement>("[data-selected-language]")!;
+    const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const submitLabel = form.querySelector<HTMLElement>("[data-submit-label]")!;
+    const status = form.querySelector<HTMLElement>("[data-signup-status]")!;
+    let submitting = false;
+    let completed = false;
+
+    submit.disabled = false;
+
+    document.addEventListener("native:language-selected", (event) => {
+      const { language } = (event as CustomEvent<{ language: string }>).detail;
+      languageInput.value = language;
+      languageLabel.textContent = language.toLocaleLowerCase("ro");
+      if (!submitting && !completed) status.textContent = "";
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (submitting || completed || !languageInput.value || !form.reportValidity()) return;
+
+      const endpoint = form.dataset.endpoint;
+      if (!endpoint) {
+        status.textContent = "Înscrierile nu sunt încă active. Nu am trimis datele tale.";
+        status.focus({ preventScroll: true });
+        return;
+      }
+
+      const data = new FormData(form);
+      data.set("_subject", "Native: înscriere pentru lansare");
+      submitting = true;
+      submit.disabled = true;
+      form.setAttribute("aria-busy", "true");
+      submitLabel.textContent = "Se trimite…";
+      status.textContent = "";
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          body: data,
+          headers: { Accept: "application/json" },
+          signal: AbortSignal.timeout(15000),
+        });
+        const result = await response.json();
+        if (!response.ok || result.ok === false || result.errors?.length) throw new Error("Signup failed");
+        completed = true;
+        fields.hidden = true;
+        status.textContent = "Mulțumim! Te anunțăm când Native este gata de prima conversație.";
+        form.reset();
+        status.focus({ preventScroll: true });
+      } catch {
+        status.textContent = "Nu am putut confirma înscrierea. Încearcă din nou în câteva momente.";
+        status.focus({ preventScroll: true });
+      } finally {
+        submitting = false;
+        submit.disabled = completed;
+        submitLabel.textContent = "Anunță-mă la lansare";
+        form.removeAttribute("aria-busy");
+      }
+    });
+  }
+</script>
+
+<style>
+  .email-signup {
+    width: 100%;
+    max-width: 640px;
+    margin: 32px auto 0;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 19px;
+    font-weight: 500;
+    line-height: 1.4;
+    text-wrap: balance;
+  }
+
+  .signup-intro {
+    margin-top: 6px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .email-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  input[type="email"] {
+    width: 100%;
+    min-width: 0;
+    min-height: 52px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 12px 16px;
+    background: #fff;
+    color: #111;
+    font: inherit;
+    font-size: 16px;
+  }
+
+  button {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 220px;
+    min-height: 52px;
+    border: 1px solid #111;
+    border-radius: 4px;
+    padding: 12px 16px;
+    background: #111;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  button:hover:not(:disabled) {
+    background: #333;
+  }
+
+  button:disabled {
+    cursor: wait;
+    opacity: .6;
+  }
+
+  input:focus-visible,
+  button:focus-visible {
+    outline: 2px solid #111;
+    outline-offset: 3px;
+  }
+
+  .honeypot {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .form-status {
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+  }
+
+  .form-status:not(:empty) {
+    margin-top: 14px;
+    padding: 10px 0;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  @media (max-width: 540px) {
+    .email-signup { margin-top: 28px; }
+    h2 { font-size: 18px; }
+    .email-row { flex-direction: column; }
+    button { width: 100%; }
+  }
+</style>

@@ -1,0 +1,213 @@
+---
+import { Icon } from "astro-icon/components";
+import CafeLesson from "@/components/landing/scenes/cafe-lesson.astro";
+import SentenceExercise from "@/components/landing/scenes/sentence-exercise.astro";
+import GuidedConversation from "@/components/landing/scenes/guided-conversation.astro";
+
+const titles = [
+  "1. Lecții interactive",
+  "2. Exerciții bazate pe situații reale",
+  "3. Conversații din viața reală",
+];
+---
+
+<section
+  id="cum-functioneaza"
+  tabindex="-1"
+  class="feature-showcase"
+  data-feature-showcase
+  data-running="false"
+  aria-label="Cum înveți cu Native"
+  aria-roledescription="carusel">
+  <div class="slides">
+    <article data-feature-slide aria-labelledby="interactive-title" class="feature-slide">
+      <header class="slide-heading">
+        <h2 id="interactive-title">{titles[0]}</h2>
+        <p>Descoperi expresii în videoclipuri, cu subtitrări în ambele limbi.</p>
+      </header>
+      <CafeLesson />
+    </article>
+
+    <article data-feature-slide aria-labelledby="exercise-title" class="feature-slide" hidden>
+      <header class="slide-heading">
+        <h2 id="exercise-title">{titles[1]}</h2>
+        <p>Legi cuvintele în propoziții, pornind de la contextul lecției.</p>
+      </header>
+      <SentenceExercise />
+    </article>
+
+    <article data-feature-slide aria-labelledby="conversation-title" class="feature-slide" hidden>
+      <header class="slide-heading">
+        <h2 id="conversation-title">{titles[2]}</h2>
+        <p>Exersezi răspunsuri pentru situații pe care le întâlnești zi de zi.</p>
+      </header>
+      <GuidedConversation />
+    </article>
+  </div>
+
+  <div class="showcase-controls" role="group" aria-label="Controlul animațiilor">
+    <div class="slide-indicators" role="group" aria-label="Alege animația">
+      {
+        titles.map((title, index) => (
+          <button
+            type="button"
+            class="slide-indicator"
+            data-slide-index={index}
+            aria-label={title}
+            aria-pressed={index === 0 ? "true" : "false"}
+            title={title}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <span class="indicator-track"><span class="indicator-progress motion"></span></span>
+          </button>
+        ))
+      }
+    </div>
+    <div class="playback-controls">
+      <button type="button" data-slide-previous aria-label="Animația anterioară" title="Animația anterioară">
+        <Icon name="bx:bx-chevron-left" width={22} height={22} aria-hidden="true" />
+      </button>
+      <button type="button" data-slide-pause aria-label="Pune animațiile pe pauză" aria-pressed="false" title="Pune animațiile pe pauză">
+        <span data-pause-icon><Icon name="bx:bx-pause" width={22} height={22} aria-hidden="true" /></span>
+        <span data-play-icon hidden><Icon name="bx:bx-play" width={22} height={22} aria-hidden="true" /></span>
+      </button>
+      <button type="button" data-slide-next aria-label="Animația următoare" title="Animația următoare">
+        <Icon name="bx:bx-chevron-right" width={22} height={22} aria-hidden="true" />
+      </button>
+    </div>
+  </div>
+  <p class="sr-only" data-slide-announcement role="status" aria-live="polite"></p>
+</section>
+
+<script>
+  const showcase = document.querySelector<HTMLElement>("[data-feature-showcase]");
+
+  if (showcase) {
+    const slides = [...showcase.querySelectorAll<HTMLElement>("[data-feature-slide]")];
+    const indicators = [...showcase.querySelectorAll<HTMLButtonElement>("[data-slide-index]")];
+    const pauseButton = showcase.querySelector<HTMLButtonElement>("[data-slide-pause]")!;
+    const pauseIcon = showcase.querySelector<HTMLElement>("[data-pause-icon]")!;
+    const playIcon = showcase.querySelector<HTMLElement>("[data-play-icon]")!;
+    const announcement = showcase.querySelector<HTMLElement>("[data-slide-announcement]")!;
+    const motionPreference = matchMedia("(prefers-reduced-motion: reduce)");
+    let active = 0;
+    let paused = motionPreference.matches;
+    let hovered = false;
+    let focused = false;
+    let inView = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let remaining = 10000;
+    let deadline: number | undefined;
+
+    const schedule = () => {
+      if (deadline !== undefined) remaining = Math.max(0, deadline - performance.now());
+      clearTimeout(timer);
+      timer = undefined;
+      deadline = undefined;
+      const running = !paused && !hovered && !focused && inView && !document.hidden;
+      showcase.dataset.running = String(running);
+      showcase.style.setProperty("--scene-play-state", !paused && inView && !document.hidden ? "running" : "paused");
+      pauseButton.setAttribute("aria-pressed", String(paused));
+      pauseButton.setAttribute("aria-label", paused ? "Pornește animațiile" : "Pune animațiile pe pauză");
+      pauseButton.title = pauseButton.getAttribute("aria-label")!;
+      pauseIcon.hidden = paused;
+      playIcon.hidden = !paused;
+      if (running) {
+        deadline = performance.now() + remaining;
+        timer = setTimeout(() => {
+          timer = undefined;
+          deadline = undefined;
+          selectSlide(active + 1);
+        }, remaining);
+      }
+    };
+
+    const selectSlide = (index: number, manual = false) => {
+      clearTimeout(timer);
+      timer = undefined;
+      deadline = undefined;
+      remaining = 10000;
+      active = (index + slides.length) % slides.length;
+      slides.forEach((slide, position) => {
+        slide.hidden = position !== active;
+        slide.toggleAttribute("data-manual", manual && position === active);
+      });
+      indicators.forEach((button, position) => button.setAttribute("aria-pressed", String(position === active)));
+      if (manual) announcement.textContent = indicators[active].getAttribute("aria-label");
+      schedule();
+    };
+
+    indicators.forEach((button, index) => button.addEventListener("click", () => selectSlide(index, true)));
+    showcase.querySelector("[data-slide-previous]")!.addEventListener("click", () => selectSlide(active - 1, true));
+    showcase.querySelector("[data-slide-next]")!.addEventListener("click", () => selectSlide(active + 1, true));
+    pauseButton.addEventListener("click", () => { paused = !paused; schedule(); });
+    showcase.addEventListener("mouseenter", () => { hovered = true; schedule(); });
+    showcase.addEventListener("mouseleave", () => { hovered = false; schedule(); });
+    showcase.addEventListener("focusin", (event) => {
+      focused = event.target !== showcase;
+      schedule();
+    });
+    showcase.addEventListener("focusout", (event) => {
+      focused = event.relatedTarget instanceof Node && showcase.contains(event.relatedTarget);
+      schedule();
+    });
+    document.addEventListener("visibilitychange", schedule);
+    motionPreference.addEventListener("change", () => { paused = motionPreference.matches; schedule(); });
+
+    const observer = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      schedule();
+    }, { threshold: 0.15 });
+    observer.observe(showcase);
+    schedule();
+  }
+</script>
+
+<style>
+  .feature-showcase {
+    --scene-duration: 10s;
+    --demo-height: 420px;
+    width: 100%;
+    max-width: 860px;
+    margin: 48px auto 0;
+    border-top: 1px solid #e8e8e8;
+    padding-top: 28px;
+    scroll-margin-top: 24px;
+  }
+
+  .slides { position: relative; height: 540px; }
+  .feature-slide { position: absolute; inset: 0; display: grid; grid-template-rows: 92px var(--demo-height); justify-items: center; gap: 20px; animation: scene-enter 250ms ease both; }
+  .slide-heading { width: 100%; text-align: center; }
+  h2 { font-size: 24px; font-weight: 500; line-height: 1.3; text-wrap: balance; }
+  .slide-heading p { max-width: 560px; margin: 10px auto 0; color: #777; font-size: 14px; line-height: 1.6; text-wrap: balance; }
+  .showcase-controls { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: min(100%, 560px); margin: 20px auto 0; }
+  .slide-indicators, .playback-controls { display: flex; align-items: center; gap: 4px; }
+  .showcase-controls button { display: grid; align-content: center; justify-items: center; height: 40px; border: 0; border-radius: 4px; padding: 0; background: transparent; color: #777; }
+  .slide-indicator { gap: 6px; width: 44px; font-size: 11px; }
+  .slide-indicator[aria-pressed="true"] { color: #111; }
+  .indicator-track { display: block; width: 28px; height: 2px; overflow: hidden; background: #e3e3e3; }
+  .indicator-progress { display: block; width: 100%; height: 100%; transform: scaleX(0); transform-origin: left; background: #111; }
+  .slide-indicator[aria-pressed="true"] .indicator-progress { animation: playback var(--scene-duration) linear both; }
+  .playback-controls button { width: 36px; }
+  .showcase-controls button:hover { background: #f3f3f3; color: #111; }
+  .showcase-controls button:focus-visible { outline: 2px solid #111; outline-offset: 3px; }
+  [data-running="false"] .motion { animation-play-state: paused; }
+  .feature-slide[data-manual] .motion { animation: none; }
+  [hidden] { display: none !important; }
+
+  @keyframes scene-enter { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes appear { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes playback { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  @media (max-width: 540px) {
+    .feature-showcase { --demo-height: 480px; margin-top: 36px; padding-top: 24px; }
+    .slides { height: 632px; }
+    .feature-slide { grid-template-rows: 132px var(--demo-height); }
+    h2 { font-size: 21px; }
+    .slide-heading p { font-size: 13px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .feature-slide, .motion { animation: none !important; }
+    .indicator-progress { transform: scaleX(1); }
+  }
+</style>

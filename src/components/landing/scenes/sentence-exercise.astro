@@ -1,0 +1,66 @@
+---
+import { Icon } from "astro-icon/components";
+---
+
+<div class="sentence-exercise" role="img" aria-label="Exemplu ghidat: Je este subiectul, voudrais este verbul, un café este complementul. Cuvintele se mută din banca de cuvinte pentru a forma Je voudrais un café.">
+  <div class="exercise-content" aria-hidden="true">
+    <p class="context"><Icon name="bx:bxs-map" width={16} height={16} />La cafenea · A1</p>
+    <p class="exercise-question">„Aș dori o cafea.”</p>
+    <div class="word-arena">
+      <div class="sentence-slots">
+        <div><p>Subiect</p><span></span></div>
+        <div><p>Verb</p><span></span></div>
+        <div><p>Complement</p><span></span></div>
+      </div>
+      <p class="bank-label">Banca de cuvinte</p>
+      <span class="word-token subject-token scene-motion" style="--bank-column: 1">Je</span>
+      <span class="word-token verb-token scene-motion" style="--bank-column: 2">voudrais</span>
+      <span class="word-token complement-token scene-motion" style="--bank-column: 0">un café.</span>
+    </div>
+    <div class="grammar-guide">
+      <p class="guide guide-subject scene-motion"><strong>1. Cine vorbește?</strong> „Je” înseamnă „Eu”. Începe cu subiectul.</p>
+      <p class="guide guide-verb scene-motion"><strong>2. Ce își dorește?</strong> Adaugă verbul: „voudrais” = „aș dori”.</p>
+      <p class="guide guide-complement scene-motion"><strong>3. Ce anume?</strong> Completează cu „un café” = „o cafea”.</p>
+      <p class="guide guide-complete scene-motion"><Icon name="bx:bx-check-circle" width={18} height={18} /><span><strong>Je voudrais un café.</strong> Ai legat cuvintele într-o propoziție.</span></p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .sentence-exercise { display: grid; align-items: center; width: min(100%, 560px); height: var(--demo-height, 360px); }
+  .exercise-content { width: 100%; max-width: 470px; margin: 0 auto; }
+  .context { display: flex; justify-content: center; align-items: center; gap: 6px; color: #777; font-size: 12px; }
+  .exercise-question { margin-top: 12px; text-align: center; font-size: 23px; font-weight: 500; }
+  .word-arena { position: relative; height: 172px; margin-top: 26px; }
+  .sentence-slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .sentence-slots p { height: 28px; color: #666; text-align: center; font-size: 12px; }
+  .sentence-slots span { display: block; height: 42px; border: 1px dashed #bbb; border-radius: 4px; background: #fafafa; }
+  .bank-label { position: absolute; top: 88px; width: 100%; color: #888; text-align: center; font-size: 10px; }
+  .word-token { position: absolute; top: 114px; left: calc(var(--bank-column) * ((100% - 16px) / 3 + 8px)); display: grid; place-items: center; width: calc((100% - 16px) / 3); height: 42px; border: 1px solid #ccc; border-radius: 4px; background: #fff; color: #333; font-size: 15px; font-weight: 500; }
+  .subject-token { animation: subject-flight var(--scene-duration, 5s) ease-in-out infinite; }
+  .verb-token { animation: verb-flight var(--scene-duration, 5s) ease-in-out infinite; }
+  .complement-token { animation: complement-flight var(--scene-duration, 5s) ease-in-out infinite; }
+  .grammar-guide { position: relative; height: 68px; margin-top: 8px; border-left: 2px solid #222; background: #f7f7f7; }
+  .guide { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: 4px; padding: 10px 14px; color: #666; font-size: 12px; line-height: 1.5; }
+  .guide strong { color: #222; font-weight: 500; }
+  .guide-subject { animation: subject-hint var(--scene-duration, 5s) linear infinite; }
+  .guide-verb { animation: verb-hint var(--scene-duration, 5s) linear infinite; }
+  .guide-complement { animation: complement-hint var(--scene-duration, 5s) linear infinite; }
+  .guide-complete { flex-direction: row; align-items: center; justify-content: flex-start; gap: 10px; animation: complete-hint var(--scene-duration, 5s) linear infinite; }
+  .guide-complete svg { flex-shrink: 0; }
+  .scene-motion { animation-play-state: var(--scene-play-state, paused); }
+  @keyframes subject-flight { 0%, 8% { transform: translate(0, 0); background: #fff; color: #333; } 20%, 100% { transform: translate(calc(-100% - 8px), -86px); background: #111; color: #fff; border-color: #111; } }
+  @keyframes verb-flight { 0%, 30% { transform: translate(0, 0); background: #fff; color: #333; } 43%, 100% { transform: translate(calc(-100% - 8px), -86px); background: #111; color: #fff; border-color: #111; } }
+  @keyframes complement-flight { 0%, 54% { transform: translate(0, 0); background: #fff; color: #333; } 68%, 100% { transform: translate(calc(200% + 16px), -86px); background: #111; color: #fff; border-color: #111; } }
+  @keyframes subject-hint { 0%, 24% { opacity: 1; } 25%, 100% { opacity: 0; } }
+  @keyframes verb-hint { 0%, 24% { opacity: 0; } 25%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @keyframes complement-hint { 0%, 49% { opacity: 0; } 50%, 74% { opacity: 1; } 75%, 100% { opacity: 0; } }
+  @keyframes complete-hint { 0%, 74% { opacity: 0; } 75%, 100% { opacity: 1; } }
+  @media (max-width: 540px) { .exercise-question { font-size: 21px; } .sentence-slots p { font-size: 10px; } .word-token { font-size: 13px; } .guide { padding: 8px 10px; font-size: 11px; } }
+  @media (prefers-reduced-motion: reduce) {
+    .scene-motion { animation: none; }
+    .subject-token, .verb-token { transform: translate(calc(-100% - 8px), -86px); background: #111; color: #fff; }
+    .complement-token { transform: translate(calc(200% + 16px), -86px); background: #111; color: #fff; }
+    .guide-subject, .guide-verb, .guide-complement { display: none; }
+  }
+</style>
