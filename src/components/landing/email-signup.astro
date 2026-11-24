@@ -1,8 +1,5 @@
 ---
 import { Icon } from "astro-icon/components";
-
-const formId = import.meta.env.PUBLIC_FORMSPREE_FORM_ID?.trim();
-const endpoint = formId ? `https://formspree.io/f/${encodeURIComponent(formId)}` : "";
 ---
 
 <section class="email-signup" data-email-signup aria-labelledby="signup-heading">
@@ -10,13 +7,14 @@ const endpoint = formId ? `https://formspree.io/f/${encodeURIComponent(formId)}`
     Vrei să înveți <strong data-selected-language class="font-bold">engleză</strong> cu Native?
   </h2>
   <p class="signup-intro">Lasă-ne adresa de e-mail și te anunțăm când poți începe.</p>
-  <form data-signup-form data-endpoint={endpoint} action={endpoint || undefined} method="post">
+  <form data-signup-form method="post">
     <input type="hidden" name="language" value="Engleză" />
     <div data-signup-fields>
       <label class="sr-only" for="signup-email">Adresa ta de e-mail</label>
       <div class="email-row">
         <input
           id="signup-email"
+          class="ph-no-capture ph-mask"
           type="email"
           name="email"
           placeholder="Adresa ta de e-mail"
@@ -39,6 +37,8 @@ const endpoint = formId ? `https://formspree.io/f/${encodeURIComponent(formId)}`
 </section>
 
 <script>
+  import { submitWaitlist, trackLandingEvent } from "@/lib/posthog";
+
   const section = document.querySelector<HTMLElement>("[data-email-signup]");
 
   if (section) {
@@ -51,6 +51,8 @@ const endpoint = formId ? `https://formspree.io/f/${encodeURIComponent(formId)}`
     const status = form.querySelector<HTMLElement>("[data-signup-status]")!;
     let submitting = false;
     let completed = false;
+    let pendingSubmission: { signature: string; id: string } | undefined;
+    let languageSelection: "default" | "explicit" = "default";
 
     submit.disabled = false;
 
@@ -58,6 +60,8 @@ const endpoint = formId ? `https://formspree.io/f/${encodeURIComponent(formId)}`
       const { language } = (event as CustomEvent<{ language: string }>).detail;
       languageInput.value = language;
       languageLabel.textContent = language.toLocaleLowerCase("ro");
+      languageSelection = "explicit";
+      trackLandingEvent("native_language_selected", { language, language_selection: languageSelection });
       if (!submitting && !completed) status.textContent = "";
     });
 
@@ -65,36 +69,35 @@ const endpoint = formId ? `https://formspree.io/f/${encodeURIComponent(formId)}`
       event.preventDefault();
       if (submitting || completed || !languageInput.value || !form.reportValidity()) return;
 
-      const endpoint = form.dataset.endpoint;
-      if (!endpoint) {
-        status.textContent = "Înscrierile nu sunt încă active. Nu am trimis datele tale.";
+      const email = form.querySelector<HTMLInputElement>('[name="email"]')!.value.trim();
+      const language = languageInput.value;
+      if (form.querySelector<HTMLInputElement>('[name="_gotcha"]')!.value) {
+        status.textContent = "Nu am putut confirma înscrierea. Încearcă din nou.";
         status.focus({ preventScroll: true });
         return;
       }
 
-      const data = new FormData(form);
-      data.set("_subject", "Native: înscriere pentru lansare");
+      const signature = JSON.stringify([email.toLowerCase(), language]);
+      if (pendingSubmission?.signature !== signature) {
+        pendingSubmission = { signature, id: crypto.randomUUID() };
+      }
       submitting = true;
       submit.disabled = true;
       form.setAttribute("aria-busy", "true");
       submitLabel.textContent = "Se trimite…";
       status.textContent = "";
+      trackLandingEvent("native_signup_attempted", { language, language_selection: languageSelection });
 
       try {
-        const response = await fetch(endpoint, {
-          method: "POST",
-          body: data,
-          headers: { Accept: "application/json" },
-          signal: AbortSignal.timeout(15000),
-        });
-        const result = await response.json();
-        if (!response.ok || result.ok === false || result.errors?.length) throw new Error("Signup failed");
+        await submitWaitlist(email, language, pendingSubmission.id);
+        trackLandingEvent("native_signup_accepted", { language, language_selection: languageSelection });
         completed = true;
         fields.hidden = true;
-        status.textContent = "Mulțumim! Te anunțăm când Native este gata de prima conversație.";
+        status.textContent = "Mulțumim! Cererea de înscriere a fost primită. Te anunțăm la lansare.";
         form.reset();
         status.focus({ preventScroll: true });
       } catch {
+        trackLandingEvent("native_signup_failed", { language, language_selection: languageSelection });
         status.textContent = "Nu am putut confirma înscrierea. Încearcă din nou în câteva momente.";
         status.focus({ preventScroll: true });
       } finally {

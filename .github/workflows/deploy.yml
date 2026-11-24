@@ -17,8 +17,16 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_POSTHOG_PROJECT_TOKEN: ${{ vars.PUBLIC_POSTHOG_PROJECT_TOKEN || secrets.PUBLIC_POSTHOG_PROJECT_TOKEN }}
+      PUBLIC_POSTHOG_HOST: ${{ vars.PUBLIC_POSTHOG_HOST || secrets.PUBLIC_POSTHOG_HOST }}
     steps:
       - uses: actions/checkout@v4
+      - name: Validate PostHog configuration
+        if: ${{ env.PUBLIC_POSTHOG_PROJECT_TOKEN == '' || env.PUBLIC_POSTHOG_HOST == '' }}
+        run: |
+          echo "::error::Set PUBLIC_POSTHOG_PROJECT_TOKEN and PUBLIC_POSTHOG_HOST in repository Actions variables or secrets."
+          exit 1
       - uses: withastro/action@v4
         with:
           node-version: 22

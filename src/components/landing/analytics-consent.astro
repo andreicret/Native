@@ -1,0 +1,65 @@
+<div class="analytics-preferences" data-analytics-preferences hidden>
+  <button type="button" class="privacy-settings" data-privacy-settings>Preferințe de analiză</button>
+  <aside class="consent-banner" data-analytics-banner hidden aria-labelledby="analytics-choice-title">
+    <div class="consent-inner">
+      <div class="consent-copy">
+        <h2 id="analytics-choice-title">Ne ajuți să îmbunătățim Native?</h2>
+        <p>
+          Cu acordul tău, folosim PostHog pentru statistici și înregistrarea interacțiunilor din pagină.
+          Câmpurile de e-mail sunt mascate. Te poți înscrie și dacă refuzi analiza.
+        </p>
+      </div>
+      <div class="consent-actions">
+        <button type="button" data-analytics-reject>Refuz</button>
+        <button type="button" data-analytics-accept>Accept analiza</button>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+  import { getAnalyticsChoice, isPostHogConfigured, setAnalyticsChoice } from "@/lib/posthog";
+
+  const preferences = document.querySelector<HTMLElement>("[data-analytics-preferences]");
+  if (preferences && isPostHogConfigured) {
+    const banner = preferences.querySelector<HTMLElement>("[data-analytics-banner]")!;
+    const settings = preferences.querySelector<HTMLButtonElement>("[data-privacy-settings]")!;
+    const accept = preferences.querySelector<HTMLButtonElement>("[data-analytics-accept]")!;
+    const choice = getAnalyticsChoice();
+    preferences.hidden = false;
+    banner.hidden = !!choice;
+    if (choice) void setAnalyticsChoice(choice);
+
+    const choose = (choice: "accepted" | "rejected") => {
+      banner.hidden = true;
+      void setAnalyticsChoice(choice);
+      settings.focus({ preventScroll: true });
+    };
+    settings.addEventListener("click", () => {
+      banner.hidden = false;
+      accept.focus({ preventScroll: true });
+    });
+    accept.addEventListener("click", () => choose("accepted"));
+    preferences.querySelector("[data-analytics-reject]")!.addEventListener("click", () => choose("rejected"));
+  }
+</script>
+
+<style>
+  .analytics-preferences { padding: 8px 24px 20px; text-align: center; }
+  .privacy-settings { border: 0; padding: 8px; background: transparent; color: #777; font-size: 11px; text-decoration: underline; text-underline-offset: 3px; }
+  .consent-banner { position: fixed; right: 0; bottom: 0; left: 0; z-index: 60; border-top: 1px solid #ccc; padding: 20px 24px; background: #fff; text-align: left; }
+  .consent-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; width: 100%; max-width: 1080px; margin: 0 auto; }
+  .consent-copy { max-width: 680px; }
+  h2 { font-size: 15px; font-weight: 600; line-height: 1.4; }
+  p { margin-top: 6px; color: #666; font-size: 12px; line-height: 1.65; }
+  .consent-actions { display: flex; flex-shrink: 0; gap: 8px; }
+  .consent-actions button { min-width: 96px; min-height: 42px; border: 1px solid #111; border-radius: 4px; padding: 10px 14px; background: #fff; color: #111; font-size: 12px; font-weight: 500; }
+  [data-analytics-accept] { background: #111 !important; color: #fff !important; }
+  button:focus-visible { outline: 2px solid #111; outline-offset: 3px; }
+  [hidden] { display: none !important; }
+  @media (max-width: 640px) {
+    .consent-banner { padding: 16px 20px calc(16px + env(safe-area-inset-bottom)); }
+    .consent-inner { flex-direction: column; align-items: stretch; gap: 14px; }
+    .consent-actions { justify-content: flex-end; }
+  }
+</style>
