@@ -11,7 +11,7 @@ const configuredHost = import.meta.env.PUBLIC_POSTHOG_HOST?.trim();
 const consentKey = "native_analytics_consent";
 export const isPostHogConfigured = Boolean(projectToken && configuredHost);
 export type AnalyticsChoice = "accepted" | "rejected";
-export type LandingEvent = "native_language_selected" | "native_signup_attempted" | "native_signup_accepted" | "native_signup_failed";
+export type LandingEvent = "native_language_selected" | "native_signup_started" | "native_signup_attempted" | "native_signup_accepted" | "native_signup_failed";
 let analyticsAllowed = false;
 let client: PostHog | undefined;
 let loadingClient: Promise<PostHog | undefined> | undefined;
@@ -58,6 +58,10 @@ export function getAnalyticsChoice(): AnalyticsChoice | undefined {
   return undefined;
 }
 
+export function hasAnalyticsConsent() {
+  return analyticsAllowed;
+}
+
 export async function setAnalyticsChoice(choice: AnalyticsChoice) {
   analyticsAllowed = choice === "accepted";
   try { localStorage.setItem(consentKey, choice); } catch {}
@@ -67,7 +71,8 @@ export async function setAnalyticsChoice(choice: AnalyticsChoice) {
     client?.opt_out_capturing();
     return;
   }
-  await startAnalytics();
+  const instance = await startAnalytics();
+  if (instance && analyticsAllowed) document.dispatchEvent(new Event("native:analytics-ready"));
 }
 
 function safeUrl(value: unknown) {
@@ -158,6 +163,8 @@ export function trackLandingEvent(event: LandingEvent, properties: { language: s
 export async function submitWaitlist(email: string, language: string, submissionId: string) {
   if (!email.trim() || !language.trim() || !submissionId) throw new Error("Incomplete submission");
 
+  const instance = analyticsAllowed ? await startAnalytics().catch(() => undefined) : undefined;
+  const sessionProperties = instance && analyticsAllowed ? { $session_id: instance.get_session_id() } : {};
   const response = await fetch(`${getApiHost()}/i/v0/e/`, {
     method: "POST",
     credentials: "omit",
@@ -171,6 +178,7 @@ export async function submitWaitlist(email: string, language: string, submission
       timestamp: new Date().toISOString(),
       properties: {
         ...getLandingContext(),
+        ...sessionProperties,
         $process_person_profile: false,
         $survey_id: waitlistSurvey.id,
         $survey_iteration: 0,
@@ -184,5 +192,10 @@ export async function submitWaitlist(email: string, language: string, submission
   });
   if (!response.ok) throw new Error("PostHog rejected the submission");
   const result = await response.json();
-  if (result !== 1 && result?.status !== 1) throw new Error("PostHog did not confirm the submission");
+  if (Array.isArray(result?.quota_limited) && result.quota_limited.length) {
+    throw new Error("PostHog quota exceeded");
+  }
+  if (result !== 1 && result?.status !== 1 && result?.status !== "Ok") {
+    throw new Error("PostHog did not confirm the submission");
+  }
 }

@@ -37,7 +37,7 @@ import { Icon } from "astro-icon/components";
 </section>
 
 <script>
-  import { submitWaitlist, trackLandingEvent } from "@/lib/posthog";
+  import { hasAnalyticsConsent, submitWaitlist, trackLandingEvent } from "@/lib/posthog";
 
   const section = document.querySelector<HTMLElement>("[data-email-signup]");
 
@@ -46,6 +46,7 @@ import { Icon } from "astro-icon/components";
     const fields = form.querySelector<HTMLElement>("[data-signup-fields]")!;
     const languageInput = form.querySelector<HTMLInputElement>('[name="language"]')!;
     const languageLabel = section.querySelector<HTMLElement>("[data-selected-language]")!;
+    const emailInput = form.querySelector<HTMLInputElement>('[name="email"]')!;
     const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
     const submitLabel = form.querySelector<HTMLElement>("[data-submit-label]")!;
     const status = form.querySelector<HTMLElement>("[data-signup-status]")!;
@@ -53,8 +54,22 @@ import { Icon } from "astro-icon/components";
     let completed = false;
     let pendingSubmission: { signature: string; id: string } | undefined;
     let languageSelection: "default" | "explicit" = "default";
+    let signupStarted = false;
 
     submit.disabled = false;
+
+    const trackSignupStart = () => {
+      if (signupStarted || completed || !emailInput.value.trim() || !hasAnalyticsConsent()) return;
+      signupStarted = true;
+      trackLandingEvent("native_signup_started", {
+        language: languageInput.value,
+        language_selection: languageSelection,
+      });
+    };
+
+    emailInput.addEventListener("input", trackSignupStart);
+    emailInput.addEventListener("change", trackSignupStart);
+    document.addEventListener("native:analytics-ready", trackSignupStart);
 
     document.addEventListener("native:language-selected", (event) => {
       const { language } = (event as CustomEvent<{ language: string }>).detail;
@@ -69,7 +84,7 @@ import { Icon } from "astro-icon/components";
       event.preventDefault();
       if (submitting || completed || !languageInput.value || !form.reportValidity()) return;
 
-      const email = form.querySelector<HTMLInputElement>('[name="email"]')!.value.trim();
+      const email = emailInput.value.trim();
       const language = languageInput.value;
       if (form.querySelector<HTMLInputElement>('[name="_gotcha"]')!.value) {
         status.textContent = "Nu am putut confirma înscrierea. Încearcă din nou.";
@@ -86,6 +101,7 @@ import { Icon } from "astro-icon/components";
       form.setAttribute("aria-busy", "true");
       submitLabel.textContent = "Se trimite…";
       status.textContent = "";
+      trackSignupStart();
       trackLandingEvent("native_signup_attempted", { language, language_selection: languageSelection });
 
       try {
