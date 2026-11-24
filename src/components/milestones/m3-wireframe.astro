@@ -1,17 +1,21 @@
 ---
-import { Image } from "astro:assets";
+import { Image, getImage } from "astro:assets";
 import wireframe from "@/assets/wireframe.png";
+
+// Full-size link through the image service: in dev, wireframe.src points at a
+// /@fs/ path that 404s when opened as a page.
+const fullSize = await getImage({ src: wireframe, format: "png" });
 ---
 
 <figure class="mt-4">
   <a
-    href={wireframe.src}
+    href={fullSize.src}
     target="_blank"
     rel="noopener"
     aria-label="Open the Native wireframe at full size">
     <Image
       src={wireframe}
-      alt="Native mobile wireframe with four screens: a lesson grid filtered by language, level and category; the same screen with the language, level and category dropdowns open; a full-screen video player; and an exercise screen with the video at the top, a list of exercises, a phrase-completion task and a progress bar."
+      alt="Native mobile wireframe with eight screens: a home screen with the current language, daily goal, overall progress, a skill picker, the lesson to continue, recent and recommended lessons; a lesson list tagged by skill and topic; the same list with a filter sheet for skill, topic and level; a video lesson with real people split into parts with quizzes between them; a grammar exercise with a progress bar and the upcoming exercise types; a speaking practice chat with an AI partner and a microphone button; a results screen with scores per skill, mistakes and new words; and a profile with stats, achievements, progress per skill, lesson history and a button to change the language."
       widths={[640, 1080]}
       sizes="(max-width: 1023px) 100vw, (max-width: 1279px) calc(100vw - 224px), calc(100vw - 256px)"
       class="h-auto w-full max-w-5xl"
