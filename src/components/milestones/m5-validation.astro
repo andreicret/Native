@@ -4,6 +4,14 @@ import { Icon } from "astro-icon/components";
 import funnelImage from "@/assets/Native First Funnel.png";
 import replayImage from "@/assets/Native First Session Replay.png";
 import webAnalyticsImage from "@/assets/Web Analytics.png";
+import fbClubImage from "@/assets/m5/fb-club-limbi-straine.png";
+import fbCursuriImage from "@/assets/m5/fb-cursuri-limbi-straine.png";
+import fbMeditatiiImage from "@/assets/m5/fb-meditatii-online.png";
+import redditAskRomaniaImage from "@/assets/m5/reddit-askromania.png";
+import redditCasualRoImage from "@/assets/m5/reddit-casualro.png";
+import redditRomanianImage from "@/assets/m5/reddit-romanian.png";
+import redditRoGenZImage from "@/assets/m5/reddit-rogenz.png";
+import redditRemovedImage from "@/assets/m5/reddit-languagelearning-removed.png";
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 const funnel = [
@@ -73,6 +81,90 @@ const supportingEvents = [
     purpose: "Stores the submitted email as the survey answer, together with the selected language. This is the intentional lead-collection request, not automatic field capture.",
   },
 ];
+
+const channels = [
+  {
+    name: "Club de Limbi Străine",
+    platform: "Facebook group",
+    audience: "Public group · 2.9K members",
+    language: "Romanian",
+    url: "https://www.facebook.com/groups/319767775131845/permalink/2678683832573549/",
+    image: fbClubImage,
+    alt: "Our post in the public Facebook group Club de Limbi Străine (2.9K members), asking when the reader last spoke a foreign language and linking to the Native landing page.",
+  },
+  {
+    name: "CURSURI LIMBI STRAINE",
+    platform: "Facebook group",
+    audience: "Public group · 1.2K members",
+    language: "Romanian",
+    url: "https://www.facebook.com/groups/opt.star/permalink/29982217151375593/",
+    image: fbCursuriImage,
+    alt: "Our post in the public Facebook group CURSURI LIMBI STRAINE (1.2K members), with the same Romanian text and the landing page link.",
+  },
+  {
+    name: "MEDITAȚII online – LIMBI STRAINE",
+    platform: "Facebook group",
+    audience: "Public group · 403 members",
+    language: "Romanian",
+    url: "https://www.facebook.com/groups/487157623364102/permalink/1492374962842358/",
+    image: fbMeditatiiImage,
+    alt: "Our post in the public Facebook group MEDITAȚII online – LIMBI STRAINE (403 members), with the same Romanian text and the landing page link.",
+  },
+  {
+    name: "r/romanian",
+    platform: "Reddit",
+    audience: "Subreddit about the Romanian language",
+    language: "Romanian",
+    url: "https://www.reddit.com/r/romanian/comments/1y5j5ma/native/",
+    image: redditRomanianImage,
+    alt: "Our Romanian Reddit post in r/romanian titled Native: it asks whether the reader is tired of classic learning methods, presents Native's interactive lessons, videos and real-life conversations, and links to the landing page.",
+  },
+  {
+    name: "r/CasualRO",
+    platform: "Reddit",
+    audience: "Casual Romanian community",
+    language: "English",
+    url: "https://www.reddit.com/r/CasualRO/comments/1y5j8zj/native/",
+    image: redditCasualRoImage,
+    alt: "Our English Reddit post titled Native: it invites people tired of traditional methods to learn through interactive lessons, videos and real-life conversations, and links to the landing page.",
+    status: "pending",
+  },
+  {
+    name: "r/AskRomania",
+    platform: "Reddit",
+    audience: "Questions about Romania",
+    language: "English",
+    url: "https://www.reddit.com/r/AskRomania/comments/1y5jv67/native_language/",
+    image: redditAskRomaniaImage,
+    alt: "Our English Reddit post in r/AskRomania titled Native - Language: it invites people tired of traditional methods to learn through interactive lessons, videos and real-life conversations, and links to the landing page.",
+  },
+  {
+    name: "r/RoGenZ",
+    platform: "Reddit",
+    audience: "Subreddit for young Romanians",
+    language: "Romanian",
+    url: "https://www.reddit.com/r/RoGenZ/comments/1y5jtbp/native/",
+    image: redditRoGenZImage,
+    alt: "Our Romanian Reddit post in r/RoGenZ titled Native: it asks whether the reader is tired of classic learning methods, presents Native's interactive lessons, videos and real-life conversations, and links to the landing page.",
+  },
+  {
+    name: "r/languagelearning",
+    platform: "Reddit",
+    audience: "International language-learning community",
+    language: "English",
+    url: "https://www.reddit.com/r/languagelearning/comments/1y5ji1d/comment/19t6rb4sai5hg/",
+    image: redditRemovedImage,
+    alt: "Our English post in r/languagelearning, 18 minutes after posting, with the notice: Sorry, this post was removed by Reddit's filters.",
+    status: "removed",
+  },
+];
+
+// Posts without a status went live; the others are shown with their moderation state.
+const postStatus = {
+  approved: { label: "Approved", icon: "bx:bx-check-circle" },
+  pending: { label: "Waiting for moderator approval", icon: "bx:bx-time-five" },
+  removed: { label: "Removed by Reddit's filters", icon: "bx:bx-block" },
+};
 
 ---
 
@@ -292,19 +384,147 @@ const supportingEvents = [
     </details>
   </section>
 
-  <section id="m5-evidence" aria-labelledby="m5-evidence-title" class="border-t border-gray-200 pt-8">
-    <h3 id="m5-evidence-title" class="text-xl font-bold text-gray-900">Where we go from here</h3>
-    <p class="mt-3 max-w-3xl leading-relaxed text-slate-600">
-      We now have a way to collect interest and follow the signup journey. The next step
-      is to bring in people beyond our own testing and see whether the same journey makes
-      sense to them. Other teammates are handling distribution and the campaign analysis
-      for requirements 3 and 4: posts, screenshots, permalinks and a comparison of channels
-      over a clearly stated period.
+  <section id="m5-distribution" aria-labelledby="m5-distribution-title" class="space-y-8">
+    <header>
+      <h3 id="m5-distribution-title" class="flex items-center gap-3 text-xl font-bold text-gray-900">
+        <Icon name="bx:bxs-megaphone" class="h-6 w-6 shrink-0" aria-hidden="true" />
+        Bringing people to the landing page
+      </h3>
+      <p class="mt-4 max-w-3xl leading-relaxed text-slate-600">
+        With collection and tracking in place, we shared the landing page outside the team
+        on <strong class="text-gray-900">25 November 2026</strong>: in three public Facebook
+        groups about learning foreign languages, and we tried five subreddits. We chose communities
+        where people already talk about learning languages, rather than our personal networks,
+        so that visits would come from people we do not know.
+      </p>
+      <p class="mt-4 max-w-3xl leading-relaxed text-slate-600">
+        We wrote the Facebook post around a question about the reader's own experience,
+        following the idea behind <em>The Mom Test</em>: <span lang="ro">“Când ai vorbit ultima
+        dată într-o limbă străină, la job, în vacanță sau cu un coleg străin? Ți-ai găsit ușor
+        cuvintele?”</span> (“When did you last speak a foreign language, at work, on holiday or
+        with a foreign colleague? Did the words come easily?”). We did not ask people whether
+        they like the idea. The call to action is a commitment instead: choose a language and
+        leave an email address. On Reddit we used a shorter version of the message: in
+        Romanian for r/romanian and r/RoGenZ, and in English for r/CasualRO, r/AskRomania
+        and r/languagelearning.
+      </p>
+    </header>
+
+    <ul class="grid gap-10 lg:grid-cols-2">
+      {channels.map((channel) => (
+        <li class="min-w-0" data-m5-channel>
+          <p class="text-xs font-semibold uppercase text-slate-500">{channel.platform} · {channel.language}</p>
+          <h4 class="mt-1 text-lg font-semibold text-gray-900">{channel.name}</h4>
+          <p class="mt-1 text-sm text-slate-500">{channel.audience}</p>
+          <p class="mt-2 inline-flex items-center gap-1 rounded-full border border-gray-900 px-3 py-1 text-xs font-semibold text-gray-900">
+            <Icon name={postStatus[channel.status ?? "approved"].icon} class="h-4 w-4" aria-hidden="true" />
+            {postStatus[channel.status ?? "approved"].label}
+          </p>
+          <figure class="mt-4" data-m5-screenshot>
+            <a href={channel.image.src} target="_blank" rel="noopener" aria-label={`Open the ${channel.name} screenshot at full size`}>
+              <Image src={channel.image} alt={channel.alt}
+                widths={[640, 1080]} sizes="(max-width: 1023px) 100vw, calc(50vw - 160px)" format="webp" quality={90}
+                class="h-auto w-full rounded-md border border-gray-200" />
+            </a>
+          </figure>
+          <a href={channel.url} target="_blank" rel="noopener"
+            class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-black underline underline-offset-4 hover:text-gray-600">
+            Permalink
+            <Icon name="bx:bx-link-external" class="h-4 w-4" aria-hidden="true" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section id="m5-channels" aria-labelledby="m5-channels-title">
+    <h3 id="m5-channels-title" class="flex items-center gap-3 text-xl font-bold text-gray-900">
+      <Icon name="bx:bxs-bar-chart-square" class="h-6 w-6 shrink-0" aria-hidden="true" />
+      Comparing the channels
+    </h3>
+    <p class="mt-4 max-w-3xl leading-relaxed text-slate-600">
+      It is too early to compare the channels by signups: the posts are only a day old,
+      and our links did not carry UTM parameters, so PostHog cannot attribute a visit to a
+      specific group or subreddit. What we can already compare is how easy it was to reach
+      people on each platform.
     </p>
-    <p class="mt-3 max-w-3xl leading-relaxed text-slate-600">
-      Until then, these screenshots show our first observations and a working measurement
-      setup. They do not yet tell us which channel works best or how many potential users
-      outside the team will sign up.
-    </p>
+
+    <div class="mt-6 grid gap-6 md:grid-cols-2">
+      <article class="min-w-0 border-t-2 border-gray-900 pt-4">
+        <p class="text-xs font-semibold uppercase text-slate-500">Facebook groups</p>
+        <p class="mt-2 text-3xl font-semibold tabular-nums text-gray-900">3 of 3</p>
+        <p class="text-sm text-slate-500">posts published</p>
+        <p class="mt-3 text-sm leading-relaxed text-slate-600">
+          All three posts went live straight away and stayed up. Together, the groups have
+          about 4,500 members, and they are about exactly what Native does: learning foreign
+          languages, courses and tutoring.
+        </p>
+      </article>
+      <article class="min-w-0 border-t-2 border-gray-300 pt-4">
+        <p class="text-xs font-semibold uppercase text-slate-500">Reddit</p>
+        <p class="mt-2 text-3xl font-semibold tabular-nums text-gray-900">3 of 5</p>
+        <p class="text-sm text-slate-500">posts published</p>
+        <p class="mt-3 text-sm leading-relaxed text-slate-600">
+          Our post in r/languagelearning, the community closest to our topic, was removed by
+          Reddit's filters within minutes, and the one in r/CasualRO is still waiting for
+          moderator approval. The three posts that went live are in general Romanian
+          communities, and the one we checked had no upvotes or comments after 33 minutes.
+        </p>
+      </article>
+    </div>
+
+    <section aria-labelledby="m5-reddit-title" class="mt-10">
+      <h4 id="m5-reddit-title" class="text-lg font-semibold text-gray-900">Why Reddit was more restrictive</h4>
+      <p class="mt-3 max-w-3xl leading-relaxed text-slate-600">
+        The removal matches how Reddit works. Its site-wide spam systems can catch a
+        promotional post before any moderator sees it. According to a review of the
+        published rules of 49 subreddits that founders often post in,
+        <strong class="text-gray-900">61% banned self-promotion outright or limited it</strong>,
+        and 39% banned it completely. The same review notes that “new accounts, link-only
+        posts, repeated links to the same domain, and excessive domain links across
+        communities can trigger filters.” Our posts fit that pattern: the same landing-page
+        link, shared in several subreddits within a short time.
+      </p>
+      <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-500">
+        Source: <a href="https://oneup.today/blog/reddit-selfpromo-rules-study-2026" target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-gray-900">OneUp, “Reddit Self Promotion Rules” (July 2026)</a>.
+        This is an independent review, not an official Reddit policy, and it covers
+        subreddits popular with founders rather than every community.
+      </p>
+    </section>
+
+    <section aria-labelledby="m5-facebook-title" class="mt-10">
+      <h4 id="m5-facebook-title" class="text-lg font-semibold text-gray-900">Why we will keep going on Facebook, and take paid ads into consideration</h4>
+      <p class="mt-3 max-w-3xl leading-relaxed text-slate-600">
+        Facebook let us reach communities that match our topic without being filtered. The
+        evidence also points to Facebook as the more promising place to advertise. In
+        Borrell's 2025 Local Advertiser Survey of 1,248 advertisers, 84% had used Facebook for
+        advertising or marketing in 2024, compared with 6% for Reddit. Among those who used
+        each platform, 37% rated Facebook very or extremely effective, against 17% for Reddit.
+        Paying also made a difference: 46% of advertisers who bought Facebook ads rated it very
+        or extremely effective, compared with 26% of those who only used it for free.
+      </p>
+      <dl class="mt-6 grid grid-cols-2 gap-x-6 gap-y-5 border-y border-gray-200 py-5 sm:grid-cols-4">
+        <div class="min-w-0"><dt class="text-xs text-slate-500">Used Facebook</dt><dd class="mt-1 text-2xl font-semibold tabular-nums text-gray-900">84%</dd></div>
+        <div class="min-w-0"><dt class="text-xs text-slate-500">Used Reddit</dt><dd class="mt-1 text-2xl font-semibold tabular-nums text-gray-900">6%</dd></div>
+        <div class="min-w-0"><dt class="text-xs text-slate-500">Facebook effective, paid</dt><dd class="mt-1 text-2xl font-semibold tabular-nums text-gray-900">46%</dd></div>
+        <div class="min-w-0"><dt class="text-xs text-slate-500">Facebook effective, free only</dt><dd class="mt-1 text-2xl font-semibold tabular-nums text-gray-900">26%</dd></div>
+      </dl>
+      <p class="mt-3 max-w-3xl text-sm leading-relaxed text-slate-500">
+        Source: <a href="https://cdn2.borrellassociates.com/2025/07/Borrell_2025-Local-Advertiser-Survey-Summary-for-Participants.pdf" target="_blank" rel="noopener" class="underline underline-offset-4 hover:text-gray-900">Borrell, “Highlights from Borrell's 2025 Local Advertiser Survey” (June 2025)</a>, pages 11–12.
+        The respondents are mostly small US local businesses surveyed in April–June 2025,
+        and the ratings are their own judgement rather than measured conversions. We read the
+        numbers as a direction, not as a forecast for a language app in Romania.
+      </p>
+    </section>
+
+    <aside class="mt-10 border-l-4 border-black bg-gray-50 px-5 py-4">
+      <h4 class="font-semibold text-gray-900">Our next step</h4>
+      <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
+        Facebook is our main channel for now. We will keep posting in language-learning
+        groups, and we take into consideration a small paid Facebook campaign, with its own
+        UTM link for every post and ad. That way we can compare channels by what matters most,
+        signups, rather than by whether a post was allowed to stay up.
+      </p>
+    </aside>
   </section>
 </div>
