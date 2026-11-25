@@ -155,9 +155,17 @@ async function startAnalytics(): Promise<PostHog | undefined> {
 
 export function trackLandingEvent(event: LandingEvent, properties: { language: string; language_selection?: "default" | "explicit" }) {
   if (!analyticsAllowed) return;
-  void startAnalytics().then((instance) => {
-    if (instance && analyticsAllowed) instance.capture(event, { ...getLandingContext(), ...properties });
-  }).catch(() => undefined);
+  const capture = (instance: PostHog | undefined) => {
+    if (instance && analyticsAllowed) {
+      instance.capture(event, { ...getLandingContext(), ...properties },
+        event === "native_signup_started" ? { send_instantly: true } : undefined);
+    }
+  };
+  if (client && !client.has_opted_out_capturing()) {
+    capture(client);
+    return;
+  }
+  void startAnalytics().then(capture).catch(() => undefined);
 }
 
 export async function submitWaitlist(email: string, language: string, submissionId: string) {
