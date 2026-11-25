@@ -1,6 +1,6 @@
 import m2 from "./m2";
 
-export type MilestoneComponent = "m1-overview" | "m2-discovery" | "m3-wireframe" | "m4-persona";
+export type MilestoneComponent = "m1-overview" | "m2-discovery" | "m3-wireframe" | "m4-persona" | "m5-validation";
 
 export interface MilestoneSection {
   title: string;
@@ -42,12 +42,10 @@ export const milestones: Milestone[] = [
   },
   {
     id: "m5",
-    title: "Validation 2 (design, UX)",
+    title: "Validation 2 - Lead generation & collection",
     short: "Validation 2",
-    sections: [
-      { title: "Design and UX validation", content: "" },
-      { title: "Feedback and improvements", content: "" },
-    ],
+    component: "m5-validation",
+    sections: [],
   },
   {
     id: "m6",

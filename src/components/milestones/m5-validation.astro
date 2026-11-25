@@ -1,0 +1,310 @@
+---
+import { Image } from "astro:assets";
+import { Icon } from "astro-icon/components";
+import funnelImage from "@/assets/Native First Funnel.png";
+import replayImage from "@/assets/Native First Session Replay.png";
+import webAnalyticsImage from "@/assets/Web Analytics.png";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const funnel = [
+  {
+    event: "native_landing_viewed",
+    title: "Visited Native",
+    count: "8",
+    share: "100%",
+    description: "Our starting point: PostHog persons who reached the landing-page event.",
+  },
+  {
+    event: "native_signup_started",
+    title: "Started the form",
+    count: "4",
+    share: "50%",
+    description: "Half of that starting group began entering an email address.",
+  },
+  {
+    event: "native_signup_attempted",
+    title: "Submitted the form",
+    count: "2",
+    share: "25%",
+    description: "Two reached the submission step after the email-format check.",
+  },
+  {
+    event: "native_signup_accepted",
+    title: "Received confirmation",
+    count: "2",
+    share: "25%",
+    description: "Both of those submissions received an accepted server response.",
+  },
+];
+
+const webMetrics = [
+  { value: "5", label: "Visitors" },
+  { value: "19", label: "Pageviews" },
+  { value: "6", label: "Sessions" },
+  { value: "2m 44s", label: "Session duration" },
+  { value: "33%", label: "Bounce rate" },
+];
+
+const replayMetrics = [
+  { value: "~26 min", label: "Recorded session" },
+  { value: "155", label: "Clicks" },
+  { value: "46", label: "Key presses" },
+];
+
+const supportingEvents = [
+  {
+    event: "$pageview",
+    purpose: "Provides the pageview data used by Web Analytics.",
+  },
+  {
+    event: "native_language_selected",
+    purpose: "Records an explicit language choice. The default English selection is not counted as a click.",
+  },
+  {
+    event: "native_signup_failed",
+    purpose: "Distinguishes failed or unconfirmed requests from accepted signups, without attaching the email address.",
+  },
+  {
+    event: "survey shown",
+    purpose: "Records that the signup section was visible to a visitor who accepted analytics.",
+  },
+  {
+    event: "survey sent",
+    purpose: "Stores the submitted email as the survey answer, together with the selected language. This is the intentional lead-collection request, not automatic field capture.",
+  },
+];
+
+---
+
+<div class="mt-8 space-y-16">
+  <div>
+    <p class="max-w-3xl text-lg leading-relaxed text-slate-600">
+      After talking to potential users and refining our wireframe, we wanted to take the
+      next step: give people a way to tell us they would like to try Native. We added an
+      early-access form to our landing page and connected it to PostHog. This lets us look
+      at both sides of the journey: how people explore the page and whether they go on to sign up.
+    </p>
+    <a href={`${base}/landing/`} target="_blank" rel="noopener"
+      class="mt-5 inline-flex items-center gap-2 font-semibold text-black underline underline-offset-4 hover:text-gray-600">
+      Visit our landing page
+      <Icon name="bx:bx-link-external" class="h-4 w-4" aria-hidden="true" />
+    </a>
+  </div>
+
+  <section id="m5-lead-collection" aria-labelledby="m5-lead-title">
+    <h3 id="m5-lead-title" class="flex items-center gap-3 text-xl font-bold text-gray-900">
+      <Icon name="bx:bxs-envelope" class="h-6 w-6 shrink-0" aria-hidden="true" />
+      Giving interested visitors a next step
+    </h3>
+    <p class="mt-4 max-w-3xl leading-relaxed text-slate-600">
+      We kept the signup simple. The form is visible from the start, English is selected
+      by default, and visitors can switch languages without losing the email they have
+      entered. The invitation is straightforward: <span lang="ro">“Anunță-mă la lansare”</span>,
+      or “Let me know when it launches”. We ask for an email address and keep the selected
+      language with it, so we know what each person is interested in learning.
+    </p>
+    <p class="mt-4 max-w-3xl leading-relaxed text-slate-600">
+      Behind the form, we use the PostHog API survey <span lang="ro">“Native – Acces anticipat”</span>.
+      This gives us a place to collect responses while keeping our own interface, rather
+      than adding a second survey popup. We only show a confirmation after the server
+      accepts the request. If something goes wrong, the visitor can retry without retyping
+      their email.
+    </p>
+    <aside class="mt-6 border-l-4 border-black bg-gray-50 px-5 py-4">
+      <h4 class="font-semibold text-gray-900">A working signup is not the same as validated demand.</h4>
+      <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
+        So far, the survey contains our own test email addresses. We have not included a
+        screenshot of those responses: it would expose personal information without
+        showing interest from potential users. For now, they help us check that collection
+        works, not claim that we have acquired customers.
+      </p>
+    </aside>
+  </section>
+
+  <section id="m5-analytics" aria-labelledby="m5-analytics-title" class="space-y-12">
+    <header>
+      <h3 id="m5-analytics-title" class="flex items-center gap-3 text-xl font-bold text-gray-900">
+        <Icon name="bx:bxs-bar-chart-alt-2" class="h-6 w-6 shrink-0" aria-hidden="true" />
+        What happens after someone opens Native?
+      </h3>
+      <p class="mt-4 max-w-3xl leading-relaxed text-slate-600">
+        We use three PostHog tools together. Web Analytics gives us an overview of traffic,
+        the funnel shows where people stop along the signup journey, and Session Replay
+        lets us look more closely at individual visits. The captures below are our first
+        snapshots of that setup, rather than a finished acquisition campaign.
+      </p>
+    </header>
+
+    <section aria-labelledby="m5-web-title">
+      <h4 id="m5-web-title" class="text-lg font-semibold text-gray-900">Our first traffic snapshot</h4>
+      <p class="mt-3 max-w-3xl leading-relaxed text-slate-600">
+        The Web Analytics view shows <strong class="text-gray-900">5 visitors, 19 pageviews
+        and 6 sessions</strong> with “Last 7 days” selected. It also reports a session duration
+        of 2 minutes 44 seconds and a bounce rate of 33%. These give us a starting point for
+        checking the page's activity, but the sample is still small and includes our setup period.
+      </p>
+      <dl class="mt-6 grid grid-cols-2 gap-x-6 gap-y-5 border-y border-gray-200 py-5 sm:grid-cols-3 xl:grid-cols-5">
+        {webMetrics.map((metric) => (
+          <div class="min-w-0">
+            <dt class="text-xs text-slate-500">{metric.label}</dt>
+            <dd class="mt-1 text-2xl font-semibold tabular-nums text-gray-900">{metric.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <figure class="mt-6" data-m5-screenshot>
+        <a href={webAnalyticsImage.src} target="_blank" rel="noopener" aria-label="Open the Web Analytics screenshot at full size">
+          <Image src={webAnalyticsImage} alt="PostHog Web Analytics showing 5 visitors, 19 pageviews, 6 sessions, a session duration of 2 minutes 44 seconds and a bounce rate of 33%."
+            widths={[640, 1080, 1440]} sizes="(max-width: 1023px) 100vw, calc(100vw - 256px)" format="webp" quality={95}
+            class="h-auto w-full rounded-md border border-gray-200" />
+        </a>
+        <figcaption class="mt-3 text-sm leading-relaxed text-slate-500">Our Web Analytics overview. The capture shows the last seven days; it is an early snapshot, not a channel-performance report.</figcaption>
+      </figure>
+    </section>
+
+    <section aria-labelledby="m5-funnel-title">
+      <h4 id="m5-funnel-title" class="text-lg font-semibold text-gray-900">Following the signup journey</h4>
+      <p class="mt-3 max-w-3xl leading-relaxed text-slate-600">
+        We built <strong class="text-gray-900">“Native First Funnel”</strong> around four
+        moments: opening the page, starting the email field, submitting the form and
+        receiving confirmation. We deliberately left language selection out of the
+        required steps, because someone can sign up with the default language.
+      </p>
+      <ol class="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        {funnel.map((step, index) => (
+          <li class="min-w-0 border-t-2 border-gray-200 pt-4" data-m5-funnel-step>
+            <p class="text-xs font-semibold text-gray-400">0{index + 1}</p>
+            <p class="mt-2 flex items-baseline gap-2"><strong class="text-3xl font-semibold tabular-nums text-gray-900">{step.count}</strong><span class="text-sm text-slate-500">{step.share} of entry</span></p>
+            <h5 class="mt-3 font-semibold text-gray-900">{step.title}</h5>
+            <p class="mt-2 text-sm leading-relaxed text-slate-600">{step.description}</p>
+            <code class="mt-3 block break-all text-xs text-slate-500">{step.event}</code>
+          </li>
+        ))}
+      </ol>
+      <aside class="mt-6 border-l-4 border-black bg-gray-50 px-5 py-4">
+        <p class="font-semibold text-gray-900">25% observed funnel completion · 16s median time to convert</p>
+        <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-600">
+          Two of the eight PostHog persons reached the final step. The visible drop-offs
+          are before starting the form and before submitting it; both people who submitted
+          reached confirmation. This helps us frame the next questions to investigate,
+          but our own test signups are part of this setup. We do not treat 25% as a reliable
+          estimate of how new visitors will convert.
+        </p>
+      </aside>
+      <figure class="mt-6" data-m5-screenshot>
+        <a href={funnelImage.src} target="_blank" rel="noopener" aria-label="Open the Native First Funnel screenshot at full size">
+          <Image src={funnelImage} alt="Native First Funnel showing 8 PostHog persons at landing viewed, 4 at signup started, 2 at signup attempted and 2 at signup accepted; total conversion 25% and median time 16 seconds."
+            widths={[640, 1080, 1440]} sizes="(max-width: 1023px) 100vw, calc(100vw - 256px)" format="webp" quality={95}
+            class="h-auto w-full rounded-md border border-gray-200" />
+        </a>
+        <figcaption class="mt-3 text-sm leading-relaxed text-slate-500">Our first saved funnel, with “Last 7 days” selected. Counts are PostHog persons, not a verified number of distinct people or new customer leads.</figcaption>
+      </figure>
+      <p class="mt-4 max-w-3xl text-sm leading-relaxed text-slate-500">
+        The funnel has 8 persons at entry, while the Web Analytics view shows 5 visitors.
+        The captures do not reveal all filters and counting settings, so we keep these
+        views separate rather than assume they describe exactly the same group.
+      </p>
+    </section>
+
+    <section aria-labelledby="m5-replay-title">
+      <h4 id="m5-replay-title" class="text-lg font-semibold text-gray-900">A closer look: a 26-minute session</h4>
+      <p class="mt-3 max-w-3xl leading-relaxed text-slate-600">
+        One recording caught our attention: it spans <strong class="text-gray-900">roughly
+        26 minutes, with 155 clicks and 46 key presses</strong>. That is more useful to us
+        than a pageview alone, because we can go back through the session and examine which
+        parts of the page were used, revisited or left open.
+      </p>
+      <dl class="mt-6 grid grid-cols-3 gap-3 border-y border-gray-200 py-5 sm:gap-6">
+        {replayMetrics.map((metric) => (
+          <div class="min-w-0">
+            <dt class="text-xs text-slate-500">{metric.label}</dt>
+            <dd class="mt-1 text-xl font-semibold tabular-nums text-gray-900 sm:text-2xl">{metric.value}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="mt-4 max-w-3xl leading-relaxed text-slate-600">
+        We would not read this as 26 minutes of continuous attention, or conclude that it
+        proves strong demand. A tab can stay open, repeated clicks can have different
+        explanations, and this may include our own testing. For now, it is a session worth
+        reviewing, not evidence that we have validated Native's learning experience.
+      </p>
+      <figure class="mt-6" data-m5-screenshot>
+        <a href={replayImage.src} target="_blank" rel="noopener" aria-label="Open the Native First Session Replay screenshot at full size">
+          <Image src={replayImage} alt="PostHog session replay of the public Native landing page. The selected recording lasts about 26 minutes with 155 clicks and 46 key presses; the email field is hidden from recording."
+            widths={[640, 1080, 1440]} sizes="(max-width: 1023px) 100vw, calc(100vw - 256px)" format="webp" quality={95}
+            class="h-auto w-full rounded-md border border-gray-200" />
+        </a>
+        <figcaption class="mt-3 text-sm leading-relaxed text-slate-500">The selected recording is on the public landing page and shows the email field masked. The recording list also includes localhost tests, so this is not a production-only campaign report.</figcaption>
+      </figure>
+    </section>
+  </section>
+
+  <section id="m5-privacy" aria-labelledby="m5-privacy-title" class="border-l-2 border-gray-300 pl-5">
+    <h3 id="m5-privacy-title" class="text-lg font-semibold text-gray-900">Understanding the visit, without collecting everything</h3>
+    <p class="mt-3 max-w-3xl leading-relaxed text-slate-600">
+      We ask before enabling optional analytics and replay. Visitors can refuse and still
+      join the launch list, or change their choice later. We mask email fields in recordings
+      and only store an address as a survey answer when the form is submitted. The
+      <code>native_signup_started</code> event tells us that someone began filling in the
+      field, not what they typed. The 46 key presses above are an interaction count, not
+      the content of a response.
+    </p>
+    <p class="mt-3 max-w-3xl leading-relaxed text-slate-600">
+      This also sets a limit on the numbers: the analytics funnel only covers visitors
+      who accepted tracking. Signups without that consent can exist outside it, and
+      blocked requests or connection problems can leave gaps. We need to keep those
+      limits in mind before comparing channels or drawing conclusions from drop-offs.
+    </p>
+  </section>
+
+  <section id="m5-verification" aria-labelledby="m5-verification-title">
+    <h3 id="m5-verification-title" class="text-xl font-bold text-gray-900">What we checked before sharing the page</h3>
+    <p class="mt-3 max-w-3xl leading-relaxed text-slate-600">
+      We tested the form locally and after deployment. Along the way, we checked language
+      changes, invalid emails, failed requests, retries and both consent choices. We also
+      corrected how we read PostHog's success response and linked consented survey
+      submissions to their sessions. These checks helped us separate a working collection
+      flow from what we still need to learn about potential users.
+    </p>
+    <details class="mt-5 border-y border-gray-200 py-4">
+      <summary class="cursor-pointer font-semibold text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-4">Our tracking setup and supporting events</summary>
+      <p class="mt-4 max-w-3xl leading-relaxed text-slate-600">
+        We reused our laboratory PostHog project, tagging Native events with
+        <code>app = native-landing</code>. Local events use <code>environment = development</code>;
+        production builds use <code>environment = production</code>. These properties,
+        together with host, path and date filters, help us isolate the traffic we want to
+        analyse. We also keep UTM campaign parameters when supplied, ready for our distribution links.
+      </p>
+      <dl class="mt-4 divide-y divide-gray-200">
+        {supportingEvents.map((item) => (
+          <div class="grid gap-2 py-4 md:grid-cols-[13rem_minmax(0,1fr)] md:gap-6">
+            <dt class="min-w-0 break-all font-mono text-sm text-gray-900">{item.event}</dt>
+            <dd class="min-w-0 leading-relaxed text-slate-600">{item.purpose}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="mt-4 max-w-3xl text-sm leading-relaxed text-slate-500">
+        A signup is counted as accepted only after a successful server response without
+        a reported quota limit. Retries reuse their submission ID to reduce duplicates.
+        Form-start events are sent immediately when the consented SDK is ready, although
+        delivery is still best-effort. We do not automatically verify ownership of an email
+        address or send a launch newsletter through this form.
+      </p>
+    </details>
+  </section>
+
+  <section id="m5-evidence" aria-labelledby="m5-evidence-title" class="border-t border-gray-200 pt-8">
+    <h3 id="m5-evidence-title" class="text-xl font-bold text-gray-900">Where we go from here</h3>
+    <p class="mt-3 max-w-3xl leading-relaxed text-slate-600">
+      We now have a way to collect interest and follow the signup journey. The next step
+      is to bring in people beyond our own testing and see whether the same journey makes
+      sense to them. Other teammates are handling distribution and the campaign analysis
+      for requirements 3 and 4: posts, screenshots, permalinks and a comparison of channels
+      over a clearly stated period.
+    </p>
+    <p class="mt-3 max-w-3xl leading-relaxed text-slate-600">
+      Until then, these screenshots show our first observations and a working measurement
+      setup. They do not yet tell us which channel works best or how many potential users
+      outside the team will sign up.
+    </p>
+  </section>
+</div>

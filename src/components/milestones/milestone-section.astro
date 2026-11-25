@@ -3,6 +3,7 @@ import M1Overview from "@/components/milestones/m1-overview.astro";
 import M2Discovery from "@/components/milestones/m2-discovery.astro";
 import M3Wireframe from "@/components/milestones/m3-wireframe.astro";
 import M4Persona from "@/components/milestones/m4-persona.astro";
+import M5Validation from "@/components/milestones/m5-validation.astro";
 import type { Milestone, MilestoneComponent } from "@/data/milestones";
 
 export interface Props {
@@ -15,6 +16,7 @@ const components = {
   "m2-discovery": M2Discovery,
   "m3-wireframe": M3Wireframe,
   "m4-persona": M4Persona,
+  "m5-validation": M5Validation,
 } satisfies Record<MilestoneComponent, typeof M1Overview>;
 const Overview = milestone.component ? components[milestone.component] : undefined;
 ---
